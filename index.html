@@ -3,33 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আপনার জন্য একটি সারপ্রাইজ ❤️</title>
+    <title>Surprise with Synced Lyrics ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Hind+Siliguri:wght@500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Hind Siliguri', sans-serif; background: #050505; color: white; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
 
-        /* স্টার্ট স্ক্রিন বাটন */
+        /* স্টার্ট বাটন */
         #start-screen { text-align: center; z-index: 1000; }
-        .open-btn { 
-            padding: 20px 40px; background: #ff4d6d; color: white; border: none; 
-            border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; 
-            box-shadow: 0 0 25px #ff4d6d; animation: pulse 1.5s infinite;
-        }
+        .open-btn { padding: 20px 40px; background: #ff4d6d; color: white; border: none; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 25px #ff4d6d; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        /* হ্যাকিং এবং কার্ড সেকশন */
-        #content { display: none; text-align: center; width: 100%; }
-        #loader-text { font-family: 'Courier New', monospace; color: #00ff00; font-size: 18px; margin-bottom: 20px; }
+        /* মেইন কন্টেন্ট */
+        #content { display: none; text-align: center; width: 100%; position: relative; }
         
-        .final-card { display: none; animation: fadeIn 2s ease-in; }
+        /* লিরিক্স বক্স ডিজাইন */
+        #lyrics-box {
+            position: absolute; top: -100px; left: 0; width: 100%;
+            font-size: 20px; color: #fff; font-style: italic;
+            text-shadow: 0 0 10px #ff4d6d; opacity: 0; transition: 0.5s;
+            height: 50px; display: flex; justify-content: center; align-items: center;
+        }
+
+        .final-card { display: none; animation: fadeIn 2s ease-in; margin-top: 50px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         .msg-box { font-size: 32px; color: #ff4d6d; font-family: 'Dancing Script', cursive; text-shadow: 0 0 10px #ff4d6d; }
         .heart { position: absolute; color: #ff4d6d; animation: float 4s infinite linear; opacity: 0; }
         @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
 
-        /* ক্রিয়েটর মোড */
+        /* ক্রিয়েটর ফরম */
         #creator { background: #1a1a1a; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
         input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; outline: none; }
         .btn { width: 100%; padding: 12px; background: #ff4d6d; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
@@ -42,11 +45,10 @@
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- ১. মেসেজ তৈরির ফরম -->
     <div id="creator">
-        <h2 style="color: #ff4d6d; margin-bottom: 10px;">Surprise Creator ❤️</h2>
-        <input type="text" id="targetName" placeholder="বন্ধুর নাম">
-        <textarea id="secretMsg" rows="3" placeholder="গোপন মেসেজ..."></textarea>
+        <h2 style="color: #ff4d6d; margin-bottom: 10px;">Lyrics Surprise Creator ❤️</h2>
+        <input type="text" id="targetName" placeholder="নাম">
+        <textarea id="secretMsg" rows="3" placeholder="মেসেজ..."></textarea>
         <button class="btn" onclick="generateLink()">লিঙ্ক তৈরি করুন</button>
         <div id="link-show">
             <p id="finalURL"></p>
@@ -54,50 +56,71 @@
         </div>
     </div>
 
-    <!-- ২. শুরু করার বাটন (Surprise Receive Mode) -->
     <div id="start-screen" style="display: none;">
-        <button class="open-btn" onclick="initSurprise()">Open Your Surprise 🎁</button>
+        <button class="open-btn" onclick="initSurprise()">গানের সাথে সারপ্রাইজ দেখুন 🎁</button>
     </div>
 
-    <!-- ৩. হ্যাকিং ও মেইন সারপ্রাইজ -->
     <div id="content">
-        <div id="loader-text"></div>
+        <!-- লিরিক্স এখানে দেখাবে -->
+        <div id="lyrics-box"></div>
+
+        <div id="loader-text" style="color: #00ff00; font-family: monospace;"></div>
+        
         <div class="final-card" id="card">
-            <h1 style="font-size: 40px; margin-bottom: 15px;">Hello <span id="friendName" style="color:#ff4d6d;"></span>!</h1>
+            <h1 style="font-size: 35px; margin-bottom: 10px;">Hello <span id="friendName" style="color:#ff4d6d;"></span>!</h1>
             <div class="msg-box" id="showMsg"></div>
         </div>
     </div>
 
 <script>
+    // গুরুত্বপূর্ণ: এখানে আপনার গানের কথা এবং সময় সেট করুন
+    // time: সেকেন্ডে, text: ওই সময়ের লিরিক্স
+    const lyricsData = [
+        { time: 2, text: "গানের প্রথম লাইন এখানে..." },
+        { time: 5, text: "দ্বিতীয় লাইন শুরু হলো..." },
+        { time: 10, text: "তোমার জন্য এই গান..." },
+        { time: 15, text: "I Love You So Much ❤️" },
+        { time: 20, text: "সারাজীবন পাশে থেকো..." }
+    ];
+
     const urlParams = new URLSearchParams(window.location.search);
     const d = urlParams.get('n');
     const m = urlParams.get('m');
 
-    // যদি কেউ লিঙ্ক দিয়ে ঢুকে
     if(d && m) {
         document.getElementById('creator').style.display = 'none';
         document.getElementById('start-screen').style.display = 'block';
     }
 
-    // বাটন ক্লিক করার পর যা হবে
+    const music = document.getElementById('bgMusic');
+    const lyricsBox = document.getElementById('lyrics-box');
+
     function initSurprise() {
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('content').style.display = 'block';
+        music.play();
         
-        // মিউজিক প্লে করা (এই ক্লিকের ফলেই মিউজিক চলবে)
-        const music = document.getElementById('bgMusic');
-        music.play().catch(e => console.log("Music play failed"));
+        // লিরিক্স আপডেট চেক করা
+        music.ontimeupdate = () => {
+            let currentTime = music.currentTime;
+            let activeLyric = lyricsData.find((l, index) => {
+                let nextTime = lyricsData[index + 1] ? lyricsData[index + 1].time : 9999;
+                return currentTime >= l.time && currentTime < nextTime;
+            });
+
+            if (activeLyric) {
+                lyricsBox.innerText = activeLyric.text;
+                lyricsBox.style.opacity = 1;
+            } else {
+                lyricsBox.style.opacity = 0;
+            }
+        };
 
         startHacking();
     }
 
     function startHacking() {
-        const lines = [
-            "> Initializing secure link...",
-            "> Bypassing firewall...",
-            "> Decrypting your message...",
-            "> Almost there..."
-        ];
+        const lines = ["> Syncing lyrics...", "> Preparing surprise...", "> Decrypting message..."];
         let i = 0;
         const loader = document.getElementById('loader-text');
         const interval = setInterval(() => {
@@ -121,7 +144,7 @@
     function generateLink() {
         const name = document.getElementById('targetName').value;
         const msg = document.getElementById('secretMsg').value;
-        if(!name || !msg) return alert("সব ঘর পূরণ করুন!");
+        if(!name || !msg) return alert("সব পূরণ করুন!");
         const link = window.location.href.split('?')[0] + `?n=${btoa(encodeURIComponent(name))}&m=${btoa(encodeURIComponent(msg))}`;
         document.getElementById('finalURL').innerText = link;
         document.getElementById('link-show').style.display = 'block';
@@ -129,14 +152,14 @@
 
     function copyURL() {
         navigator.clipboard.writeText(document.getElementById('finalURL').innerText);
-        alert("লিঙ্ক কপি হয়েছে!");
+        alert("কপি হয়েছে!");
     }
 
     function createHeart() {
         const h = document.createElement('div');
         h.className = 'heart'; h.innerHTML = '❤️';
         h.style.left = Math.random() * 100 + 'vw';
-        h.style.fontSize = Math.random() * 20 + 20 + 'px';
+        h.style.fontSize = Math.random() * 15 + 15 + 'px';
         h.style.animationDuration = Math.random() * 2 + 3 + 's';
         document.body.appendChild(h);
         setTimeout(() => h.remove(), 4000);
