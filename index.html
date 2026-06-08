@@ -19,7 +19,7 @@
             padding-top: 10px; 
         }
 
-        /* ওয়েলকাম স্ক্রিন (Click Here Button) */
+        /* স্টার্ট স্ক্রিন */
         #welcome-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #050505; display: flex; justify-content: center;
@@ -35,16 +35,14 @@
         /* মেইন কন্টেন্ট */
         #content { display: none; text-align: center; width: 95%; max-width: 450px; }
         
-        /* ছোট লিরিক্স বক্স */
+        /* RGB লিরিক্স */
         .lyrics-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 5px; border-radius: 10px; margin-bottom: 15px;
             font-size: 15px; line-height: 1.6;
+            animation: rgbAnimation 4s linear infinite; font-weight: bold;
         }
-
-        /* RGB টেক্সট অ্যানিমেশন */
-        .rgb-text { animation: rgbAnimation 4s linear infinite; font-weight: bold; }
         @keyframes rgbAnimation {
             0% { color: #ff0000; text-shadow: 0 0 5px #ff0000; }
             25% { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
@@ -53,17 +51,37 @@
             100% { color: #ff0000; text-shadow: 0 0 5px #ff0000; }
         }
 
-        .final-msg { margin-top: 10px; animation: fadeIn 2s ease-in; }
-        .msg-text { font-size: 28px; color: #ff4d6d; font-weight: 700; margin-top: 5px; }
+        .final-msg { margin-top: 5px; animation: fadeIn 2s ease-in; }
+        .msg-text { font-size: 28px; color: #ff4d6d; font-weight: 700; margin-top: 5px; margin-bottom: 20px; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* হার্ট ইফেক্ট */
+        /* মিউজিক ড্যান্সার (Visualizer) */
+        .visualizer {
+            display: flex; justify-content: center; align-items: flex-end;
+            height: 50px; gap: 5px; margin: 20px auto;
+        }
+        .bar {
+            width: 8px; height: 10px; background: #ff4d6d;
+            border-radius: 5px; animation: dance 0.5s infinite alternate;
+            box-shadow: 0 0 10px #ff4d6d;
+        }
+        /* আলাদা আলাদা স্পিডে ড্যান্স করার জন্য */
+        .bar:nth-child(2) { animation-duration: 0.4s; background: #00ff00; box-shadow: 0 0 10px #00ff00; }
+        .bar:nth-child(3) { animation-duration: 0.6s; background: #0000ff; box-shadow: 0 0 10px #0000ff; }
+        .bar:nth-child(4) { animation-duration: 0.3s; background: #ffff00; box-shadow: 0 0 10px #ffff00; }
+        .bar:nth-child(5) { animation-duration: 0.5s; background: #ff00ff; box-shadow: 0 0 10px #ff00ff; }
+
+        @keyframes dance {
+            from { height: 10px; }
+            to { height: 50px; }
+        }
+
         .heart { position: fixed; color: #ff4d6d; animation: float 4s infinite linear; opacity: 0; pointer-events: none; }
         @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
 
-        /* ক্রিয়েটর ফরম */
+        /* ক্রিয়েটর */
         #creator { background: #111; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; margin-top: 50px; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; outline: none; background: #222; color: #fff; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #333; border-radius: 10px; background: #222; color: #fff; outline: none; }
         .btn { width: 100%; padding: 12px; background: #ff4d6d; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
         #link-show { background: #222; padding: 10px; border-radius: 8px; margin-top: 15px; word-break: break-all; font-size: 11px; display: none; border: 1px dashed #ff4d6d; }
     </style>
@@ -74,26 +92,23 @@
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- ১. ক্রিয়েটর সেকশন -->
     <div id="creator">
-        <h3 style="color: #ff4d6d; margin-bottom: 10px;">Surprise Creator Pro ❤️</h3>
-        <input type="text" id="targetName" placeholder="বন্ধুর নাম লিখুন">
+        <h3 style="color: #ff4d6d; margin-bottom: 10px;">Surprise Creator Pro Max ❤️</h3>
+        <input type="text" id="targetName" placeholder="বন্ধুর নাম">
         <textarea id="secretMsg" rows="2" placeholder="আপনার মেসেজ..."></textarea>
         <button class="btn" onclick="generateLink()">লিঙ্ক তৈরি করুন</button>
         <div id="link-show">
             <p id="finalURL" style="color: #ccc; margin-bottom: 10px;"></p>
-            <button class="btn" style="background: #28a745;" onclick="copyURL()">লিঙ্ক কপি করে পাঠান</button>
+            <button class="btn" style="background: #28a745; margin-top: 10px;" onclick="copyURL()">লিঙ্ক কপি করুন</button>
         </div>
     </div>
 
-    <!-- ২. ওয়েলকাম স্ক্রিন (যখন কেউ সারপ্রাইজ পাবে) -->
     <div id="welcome-screen" style="display: none;">
         <button class="click-btn" onclick="startSurprise()">Click Here 🎁</button>
     </div>
 
-    <!-- ৩. মেইন সারপ্রাইজ কন্টেন্ট -->
     <div id="content">
-        <div class="lyrics-card rgb-text">
+        <div class="lyrics-card">
             <p>পাগল তোর জন্যরে.পাগল এ মন পাগল।</p>
             <p>পাগল তোর জন্যরে.পাগল এ মন পাগল।</p>
             <br>
@@ -109,6 +124,15 @@
             <h1 style="font-size: 26px;">Hello <span id="friendName" style="color:#ff4d6d;"></span>!</h1>
             <div class="msg-text" id="showMsg"></div>
         </div>
+
+        <!-- আপনার সার্কেল করা জায়গায় ড্যান্সিং মিউজিক বার -->
+        <div class="visualizer" id="viz">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
     </div>
 
 <script>
@@ -116,26 +140,20 @@
     const d = urlParams.get('n');
     const m = urlParams.get('m');
 
-    // যদি লিঙ্ক দিয়ে কেউ ঢুকে
     if(d && m) {
         document.getElementById('creator').style.display = 'none';
         document.getElementById('welcome-screen').style.display = 'flex';
     }
 
     function startSurprise() {
-        // স্ক্রিন পরিবর্তন
         document.getElementById('welcome-screen').style.display = 'none';
         document.getElementById('content').style.display = 'block';
-        
-        // গান চালু করা
         const music = document.getElementById('bgMusic');
-        music.play().catch(e => console.log("Music error: ", e));
+        music.play();
 
-        // ডাটা সেট করা
         document.getElementById('friendName').innerText = decodeURIComponent(atob(d));
         document.getElementById('showMsg').innerText = decodeURIComponent(atob(m));
 
-        // হার্ট রেইন শুরু
         setInterval(createHeart, 300);
     }
 
