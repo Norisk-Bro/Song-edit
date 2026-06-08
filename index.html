@@ -9,14 +9,9 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Hind Siliguri', sans-serif; 
-            background: #050505; 
-            color: white; 
-            overflow-x: hidden; 
-            display: flex; 
-            justify-content: center; 
-            align-items: flex-start; 
-            min-height: 100vh; 
-            padding-top: 10px; 
+            background: #050505; color: white; overflow-x: hidden; 
+            display: flex; justify-content: center; align-items: flex-start; 
+            min-height: 100vh; padding-top: 10px; 
         }
 
         /* স্টার্ট স্ক্রিন */
@@ -53,35 +48,22 @@
 
         .final-msg { margin-top: 5px; animation: fadeIn 2s ease-in; }
         .msg-text { font-size: 28px; color: #ff4d6d; font-weight: 700; margin-top: 5px; margin-bottom: 20px; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* মিউজিক ড্যান্সার (Visualizer) */
-        .visualizer {
-            display: flex; justify-content: center; align-items: flex-end;
-            height: 50px; gap: 5px; margin: 20px auto;
-        }
-        .bar {
-            width: 8px; height: 10px; background: #ff4d6d;
-            border-radius: 5px; animation: dance 0.5s infinite alternate;
-            box-shadow: 0 0 10px #ff4d6d;
-        }
-        /* আলাদা আলাদা স্পিডে ড্যান্স করার জন্য */
-        .bar:nth-child(2) { animation-duration: 0.4s; background: #00ff00; box-shadow: 0 0 10px #00ff00; }
-        .bar:nth-child(3) { animation-duration: 0.6s; background: #0000ff; box-shadow: 0 0 10px #0000ff; }
-        .bar:nth-child(4) { animation-duration: 0.3s; background: #ffff00; box-shadow: 0 0 10px #ffff00; }
-        .bar:nth-child(5) { animation-duration: 0.5s; background: #ff00ff; box-shadow: 0 0 10px #ff00ff; }
-
-        @keyframes dance {
-            from { height: 10px; }
-            to { height: 50px; }
-        }
+        /* মিউজিক ড্যান্সার */
+        .visualizer { display: flex; justify-content: center; align-items: flex-end; height: 50px; gap: 5px; margin: 20px auto; }
+        .bar { width: 8px; height: 10px; background: #ff4d6d; border-radius: 5px; animation: dance 0.5s infinite alternate; box-shadow: 0 0 10px #ff4d6d; }
+        .bar:nth-child(2) { animation-duration: 0.4s; background: #00ff00; }
+        .bar:nth-child(3) { animation-duration: 0.6s; background: #0000ff; }
+        .bar:nth-child(4) { animation-duration: 0.3s; background: #ffff00; }
+        .bar:nth-child(5) { animation-duration: 0.5s; background: #ff00ff; }
+        @keyframes dance { from { height: 10px; } to { height: 50px; } }
 
         .heart { position: fixed; color: #ff4d6d; animation: float 4s infinite linear; opacity: 0; pointer-events: none; }
         @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
 
-        /* ক্রিয়েটর */
+        /* ক্রিয়েটর ফরম */
         #creator { background: #111; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; margin-top: 50px; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #333; border-radius: 10px; background: #222; color: #fff; outline: none; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #333; border-radius: 10px; background: #222; color: #fff; outline: none; }
         .btn { width: 100%; padding: 12px; background: #ff4d6d; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
         #link-show { background: #222; padding: 10px; border-radius: 8px; margin-top: 15px; word-break: break-all; font-size: 11px; display: none; border: 1px dashed #ff4d6d; }
     </style>
@@ -92,14 +74,23 @@
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- ক্রিয়েটর -->
     <div id="creator">
-        <h3 style="color: #ff4d6d; margin-bottom: 10px;">Surprise Creator Pro Max ❤️</h3>
+        <h3 style="color: #ff4d6d; margin-bottom: 10px;">Surprise & Voice Changer ❤️</h3>
         <input type="text" id="targetName" placeholder="বন্ধুর নাম">
         <textarea id="secretMsg" rows="2" placeholder="আপনার মেসেজ..."></textarea>
+        
+        <label style="font-size: 12px; color: #888;">ভয়েস স্টাইল বেছে নিন:</label>
+        <select id="voiceStyle">
+            <option value="1.0">Normal (স্বাভাবিক)</option>
+            <option value="1.5">Chipmunk (চিকন গলা)</option>
+            <option value="0.75">Deep/Monster (মোটা গলা)</option>
+        </select>
+
         <button class="btn" onclick="generateLink()">লিঙ্ক তৈরি করুন</button>
         <div id="link-show">
             <p id="finalURL" style="color: #ccc; margin-bottom: 10px;"></p>
-            <button class="btn" style="background: #28a745; margin-top: 10px;" onclick="copyURL()">লিঙ্ক কপি করুন</button>
+            <button class="btn" style="background: #28a745;" onclick="copyURL()">লিঙ্ক কপি করুন</button>
         </div>
     </div>
 
@@ -108,6 +99,7 @@
     </div>
 
     <div id="content">
+        <!-- RGB লিরিক্স বক্স -->
         <div class="lyrics-card">
             <p>পাগল তোর জন্যরে.পাগল এ মন পাগল।</p>
             <p>পাগল তোর জন্যরে.পাগল এ মন পাগল।</p>
@@ -125,8 +117,8 @@
             <div class="msg-text" id="showMsg"></div>
         </div>
 
-        <!-- আপনার সার্কেল করা জায়গায় ড্যান্সিং মিউজিক বার -->
-        <div class="visualizer" id="viz">
+        <!-- ভিজ্যুয়ালাইজার -->
+        <div class="visualizer">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
@@ -139,6 +131,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const d = urlParams.get('n');
     const m = urlParams.get('m');
+    const v = urlParams.get('v'); // ভয়েস রেট
 
     if(d && m) {
         document.getElementById('creator').style.display = 'none';
@@ -148,7 +141,12 @@
     function startSurprise() {
         document.getElementById('welcome-screen').style.display = 'none';
         document.getElementById('content').style.display = 'block';
+        
         const music = document.getElementById('bgMusic');
+        
+        // ভয়েস পরিবর্তন লজিক
+        if(v) music.playbackRate = parseFloat(v);
+        
         music.play();
 
         document.getElementById('friendName').innerText = decodeURIComponent(atob(d));
@@ -160,8 +158,13 @@
     function generateLink() {
         const name = document.getElementById('targetName').value;
         const msg = document.getElementById('secretMsg').value;
+        const voice = document.getElementById('voiceStyle').value;
+        
         if(!name || !msg) return alert("সব তথ্য দিন!");
-        const link = window.location.href.split('?')[0] + `?n=${btoa(encodeURIComponent(name))}&m=${btoa(encodeURIComponent(msg))}`;
+        
+        const link = window.location.href.split('?')[0] + 
+                     `?n=${btoa(encodeURIComponent(name))}&m=${btoa(encodeURIComponent(msg))}&v=${voice}`;
+        
         document.getElementById('finalURL').innerText = link;
         document.getElementById('link-show').style.display = 'block';
     }
