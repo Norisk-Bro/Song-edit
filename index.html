@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #2c3e50, #000000);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* মিউজিক ডিস্ক অ্যানিমেশন */
+        .disc {
+            width: 200px;
+            height: 200px;
+            background: url('https://cdn-icons-png.flaticon.com/512/262/262311.png'); /* মিউজিক আইকন */
+            background-size: cover;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+            animation: rotate 5s linear infinite;
+            animation-play-state: paused;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        h1 { font-size: 24px; letter-spacing: 2px; }
+        p { font-size: 16px; color: #ccc; }
+
+        /* পালসিং ইফেক্ট */
+        .pulse {
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body onclick="playMusic()">
+
+    <!-- আপনার আপলোড করা গানটি এখানে -->
+    <audio id="mySong" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="main-container">
+        <div id="disc" class="disc"></div>
+        <h1 id="status">Music is Waiting...</h1>
+        <p class="pulse" id="instruction">Touch anywhere to Play</p>
+    </div>
+
+    <script>
+        const song = document.getElementById('mySong');
+        const disc = document.getElementById('disc');
+        const status = document.getElementById('status');
+        const instruction = document.getElementById('instruction');
+
+        function playMusic() {
+            if (song.paused) {
+                song.play();
+                disc.style.animationPlayState = 'running';
+                status.innerText = "Now Playing 🎵";
+                instruction.innerText = "Touch to Pause";
+                instruction.classList.remove('pulse');
+            } else {
+                song.pause();
+                disc.style.animationPlayState = 'paused';
+                status.innerText = "Music Paused";
+                instruction.innerText = "Touch to Resume";
+                instruction.classList.add('pulse');
+            }
+        }
+    </script>
+</body>
+</html>
