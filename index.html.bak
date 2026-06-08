@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>গোপন মেসেজ ও মিউজিক</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Hind+Siliguri:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 450px; text-align: center; position: relative; z-index: 10; }
+        textarea, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; outline: none; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 5px; }
+        #linkArea { display: none; margin-top: 15px; background: #f8f9fa; padding: 15px; border-radius: 10px; border: 1px dashed #007bff; }
+        #finalURL { word-break: break-all; font-size: 11px; color: #333; display: block; margin-bottom: 10px; }
+        #msgContainer { display: none; margin-top: 25px; padding: 20px; background: #fff; border: 2px solid #ff4d6d; border-radius: 15px; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2); }
+        #msgText { font-size: 22px; color: #d81b60; font-family: 'Dancing Script', 'Hind Siliguri', cursive; }
+        .hidden { display: none; }
+        #musicBtn { position: fixed; bottom: 20px; right: 20px; background: #ff4d6d; color: white; border-radius: 50%; width: 45px; height: 45px; border: none; cursor: pointer; font-size: 20px; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body onclick="playMusic()">
+
+    <!-- আপনার আপলোড করা গানটি এখানে কানেক্ট করা হলো -->
+    <audio id="mySong" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card">
+        <div id="createMode">
+            <h3>গোপন মেসেজ তৈরি করুন 🔒</h3>
+            <textarea id="text" rows="3" placeholder="মেসেজ লিখুন..."></textarea>
+            <input type="password" id="pass" placeholder="পাসওয়ার্ড দিন">
+            <button onclick="makeLink()">লিঙ্ক তৈরি করুন</button>
+            
+            <div id="linkArea">
+                <span id="finalURL"></span>
+                <button onclick="copyURL()" style="background: #28a745;">লিঙ্ক কপি করুন</button>
+            </div>
+        </div>
+
+        <div id="viewMode" class="hidden">
+            <h3>মেসেজটি লক করা আছে 🔑</h3>
+            <input type="password" id="checkPass" placeholder="পাসওয়ার্ড লিখুন">
+            <button onclick="decrypt()">আনলক করুন</button>
+            <div id="msgContainer"><span id="msgText"></span></div>
+        </div>
+    </div>
+
+    <button id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+<script>
+    const song = document.getElementById('mySong');
+    let isPlaying = false;
+
+    // স্ক্রিনের কোথাও ক্লিক করলে গান বাজবে
+    function playMusic() {
+        if(!isPlaying) {
+            song.play().catch(e => console.log("Autoplay blocked"));
+            isPlaying = true;
+        }
+    }
+
+    function toggleMusic() {
+        if (song.paused) { song.play(); } 
+        else { song.pause(); }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const data = params.get('d');
+    const hash = params.get('k');
+
+    if(data && hash) {
+        document.getElementById('createMode').classList.add('hidden');
+        document.getElementById('viewMode').classList.remove('hidden');
+    }
+
+    function makeLink() {
+        const txt = document.getElementById('text').value;
+        const ps = document.getElementById('pass').value;
+        if(!txt || !ps) return alert("মেসেজ ও পাসওয়ার্ড দিন");
+        const encMsg = btoa(encodeURIComponent(txt));
+        const encPass = btoa(ps);
+        const link = window.location.href.split('?')[0] + `?d=${encMsg}&k=${encPass}`;
+        document.getElementById('finalURL').innerText = link;
+        document.getElementById('linkArea').style.display = 'block';
+    }
+
+    function decrypt() {
+        const input = document.getElementById('checkPass').value;
+        if(input === atob(hash)) {
+            const decoded = decodeURIComponent(atob(data));
+            document.getElementById('msgContainer').style.display = "block";
+            let textElement = document.getElementById('msgText');
+            textElement.innerText = "";
+            let i = 0;
+            function typeWriter() {
+                if (i < decoded.length) {
+                    textElement.innerHTML += decoded.charAt(i); i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            typeWriter();
+        } else { alert("ভুল পাসওয়ার্ড!"); }
+    }
+
+    function copyURL() {
+        const text = document.getElementById('finalURL').innerText;
+        navigator.clipboard.writeText(text).then(() => alert("কপি হয়েছে!"));
+    }
+</script>
+</body>
+</html>
