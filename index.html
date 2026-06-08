@@ -3,40 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise with Synced Lyrics ❤️</title>
+    <title>পাগল তোর জন্যরে ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Hind+Siliguri:wght@500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Hind Siliguri', sans-serif; background: #050505; color: white; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
 
-        /* স্টার্ট বাটন */
+        /* শুরুতে ওপেন বাটন */
         #start-screen { text-align: center; z-index: 1000; }
-        .open-btn { padding: 20px 40px; background: #ff4d6d; color: white; border: none; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 25px #ff4d6d; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .open-btn { padding: 18px 35px; background: #ff4d6d; color: white; border: none; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px #ff4d6d; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
 
-        /* মেইন কন্টেন্ট */
+        /* লিরিক্স এবং কার্ড সেকশন */
         #content { display: none; text-align: center; width: 100%; position: relative; }
         
-        /* লিরিক্স বক্স ডিজাইন */
-        #lyrics-box {
-            position: absolute; top: -100px; left: 0; width: 100%;
-            font-size: 20px; color: #fff; font-style: italic;
-            text-shadow: 0 0 10px #ff4d6d; opacity: 0; transition: 0.5s;
-            height: 50px; display: flex; justify-content: center; align-items: center;
+        #lyrics-display {
+            position: fixed; top: 15%; left: 0; width: 100%;
+            font-size: 22px; color: #fff; font-weight: bold;
+            text-shadow: 0 0 15px #ff4d6d; opacity: 0; transition: 0.4s;
+            padding: 0 20px; min-height: 60px;
         }
 
-        .final-card { display: none; animation: fadeIn 2s ease-in; margin-top: 50px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .final-card { display: none; animation: fadeIn 2.5s ease-in; margin-top: 50px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
-        .msg-box { font-size: 32px; color: #ff4d6d; font-family: 'Dancing Script', cursive; text-shadow: 0 0 10px #ff4d6d; }
-        .heart { position: absolute; color: #ff4d6d; animation: float 4s infinite linear; opacity: 0; }
+        .msg-box { font-size: 32px; color: #ff4d6d; font-family: 'Dancing Script', cursive; text-shadow: 0 0 10px #ff4d6d; margin-top: 15px; }
+        .heart { position: absolute; color: #ff4d6d; animation: float 4s infinite linear; opacity: 0; pointer-events: none; }
         @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
 
-        /* ক্রিয়েটর ফরম */
-        #creator { background: #1a1a1a; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; outline: none; }
-        .btn { width: 100%; padding: 12px; background: #ff4d6d; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
-        #link-show { background: #333; padding: 10px; border-radius: 8px; margin-top: 15px; word-break: break-all; font-size: 11px; display: none; }
+        /* ক্রিয়েটর মোড */
+        #creator { background: #111; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; outline: none; background: #222; color: #fff; }
+        .btn { width: 100%; padding: 12px; background: #ff4d6d; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        #link-show { background: #222; padding: 10px; border-radius: 8px; margin-top: 15px; word-break: break-all; font-size: 11px; display: none; border: 1px dashed #ff4d6d; }
     </style>
 </head>
 <body>
@@ -46,41 +45,45 @@
     </audio>
 
     <div id="creator">
-        <h2 style="color: #ff4d6d; margin-bottom: 10px;">Lyrics Surprise Creator ❤️</h2>
-        <input type="text" id="targetName" placeholder="নাম">
-        <textarea id="secretMsg" rows="3" placeholder="মেসেজ..."></textarea>
+        <h3 style="color: #ff4d6d; margin-bottom: 15px;">Surprise with Lyrics ❤️</h3>
+        <input type="text" id="targetName" placeholder="কার জন্য তৈরি করছেন?">
+        <textarea id="secretMsg" rows="3" placeholder="আপনার গোপন মেসেজ..."></textarea>
         <button class="btn" onclick="generateLink()">লিঙ্ক তৈরি করুন</button>
         <div id="link-show">
-            <p id="finalURL"></p>
-            <button class="btn" style="background: #28a745; margin-top: 10px;" onclick="copyURL()">কপি করে পাঠান</button>
+            <p id="finalURL" style="color: #ddd; margin-bottom: 10px;"></p>
+            <button class="btn" style="background: #28a745;" onclick="copyURL()">কপি করে বন্ধুকে পাঠান</button>
         </div>
     </div>
 
     <div id="start-screen" style="display: none;">
-        <button class="open-btn" onclick="initSurprise()">গানের সাথে সারপ্রাইজ দেখুন 🎁</button>
+        <button class="open-btn" onclick="initSurprise()">ওপেন করো পাগলু! 🎁</button>
     </div>
 
     <div id="content">
-        <!-- লিরিক্স এখানে দেখাবে -->
-        <div id="lyrics-box"></div>
-
-        <div id="loader-text" style="color: #00ff00; font-family: monospace;"></div>
+        <div id="lyrics-display"></div>
+        <div id="loader-text" style="color: #00ff00; font-family: monospace; font-size: 14px;"></div>
         
         <div class="final-card" id="card">
-            <h1 style="font-size: 35px; margin-bottom: 10px;">Hello <span id="friendName" style="color:#ff4d6d;"></span>!</h1>
+            <h1 style="font-size: 35px;">Hello <span id="friendName" style="color:#ff4d6d;"></span>!</h1>
             <div class="msg-box" id="showMsg"></div>
         </div>
     </div>
 
 <script>
-    // গুরুত্বপূর্ণ: এখানে আপনার গানের কথা এবং সময় সেট করুন
-    // time: সেকেন্ডে, text: ওই সময়ের লিরিক্স
+    // লিরিক্স এবং সময় (আপনার গানের সাথে মিল রেখে সময় পরিবর্তন করতে পারেন)
     const lyricsData = [
-        { time: 2, text: "গানের প্রথম লাইন এখানে..." },
-        { time: 5, text: "দ্বিতীয় লাইন শুরু হলো..." },
-        { time: 10, text: "তোমার জন্য এই গান..." },
-        { time: 15, text: "I Love You So Much ❤️" },
-        { time: 20, text: "সারাজীবন পাশে থেকো..." }
+        { time: 10, text: "পাগল তোর জন্যরে..." },
+        { time: 13, text: "পাগল এ মন পাগল।" },
+        { time: 16, text: "পাগল তোর জন্যরে..." },
+        { time: 19, text: "পাগল এ মন পাগল।" },
+        { time: 25, text: "মুখে বলি দূরে যা" },
+        { time: 28, text: "মন বলে থেকে যা" },
+        { time: 31, text: "মুখে বলি দূরে যা" },
+        { time: 34, text: "মন বলে থেকে যা" },
+        { time: 38, text: "দূরে গেলে মন বোঝে..." },
+        { time: 42, text: "তুই কত আপন।।" },
+        { time: 48, text: "পাগল তোর জন্যরে..." },
+        { time: 51, text: "পাগল এ মন পাগল।" }
     ];
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -93,26 +96,26 @@
     }
 
     const music = document.getElementById('bgMusic');
-    const lyricsBox = document.getElementById('lyrics-box');
+    const lyricDiv = document.getElementById('lyrics-display');
 
     function initSurprise() {
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('content').style.display = 'block';
         music.play();
         
-        // লিরিক্স আপডেট চেক করা
+        // লিরিক্স সিঙ্ক লজিক
         music.ontimeupdate = () => {
-            let currentTime = music.currentTime;
-            let activeLyric = lyricsData.find((l, index) => {
-                let nextTime = lyricsData[index + 1] ? lyricsData[index + 1].time : 9999;
-                return currentTime >= l.time && currentTime < nextTime;
+            let cur = music.currentTime;
+            let active = lyricsData.find((l, i) => {
+                let next = lyricsData[i+1] ? lyricsData[i+1].time : 9999;
+                return cur >= l.time && cur < next;
             });
 
-            if (activeLyric) {
-                lyricsBox.innerText = activeLyric.text;
-                lyricsBox.style.opacity = 1;
+            if (active) {
+                lyricDiv.innerText = active.text;
+                lyricDiv.style.opacity = 1;
             } else {
-                lyricsBox.style.opacity = 0;
+                lyricDiv.style.opacity = 0;
             }
         };
 
@@ -120,7 +123,7 @@
     }
 
     function startHacking() {
-        const lines = ["> Syncing lyrics...", "> Preparing surprise...", "> Decrypting message..."];
+        const lines = ["> Connecting to Heart Server...", "> Syncing 'Pagol' Lyrics...", "> Opening Surprise..."];
         let i = 0;
         const loader = document.getElementById('loader-text');
         const interval = setInterval(() => {
@@ -144,7 +147,7 @@
     function generateLink() {
         const name = document.getElementById('targetName').value;
         const msg = document.getElementById('secretMsg').value;
-        if(!name || !msg) return alert("সব পূরণ করুন!");
+        if(!name || !msg) return alert("সব ঘর পূরণ করুন!");
         const link = window.location.href.split('?')[0] + `?n=${btoa(encodeURIComponent(name))}&m=${btoa(encodeURIComponent(msg))}`;
         document.getElementById('finalURL').innerText = link;
         document.getElementById('link-show').style.display = 'block';
@@ -152,7 +155,7 @@
 
     function copyURL() {
         navigator.clipboard.writeText(document.getElementById('finalURL').innerText);
-        alert("কপি হয়েছে!");
+        alert("লিঙ্ক কপি হয়েছে!");
     }
 
     function createHeart() {
