@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>গোপন মেসেজ বক্স</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #eef2f7; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
+        textarea, input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        #linkBox { display: none; background: #f8f9fa; border: 1px dashed #007bff; padding: 10px; margin-top: 15px; word-break: break-all; font-size: 11px; }
+        .hidden { display: none; }
+        #msgShow { margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 8px; color: #155724; font-weight: 500; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="app">
+        <div id="createMode">
+            <h3>গোপন মেসেজ তৈরি করুন 🔒</h3>
+            <textarea id="text" rows="3" placeholder="আপনার মেসেজ..."></textarea>
+            <input type="password" id="pass" placeholder="পাসওয়ার্ড দিন">
+            <button onclick="makeLink()">লিঙ্ক তৈরি করুন</button>
+            
+            <div id="linkBox">
+                <p>নিচের লিঙ্কটি কপি করুন:</p>
+                <code id="finalURL"></code>
+                <button onclick="copyToClipboard()" style="background: #28a745;">কপি করুন</button>
+            </div>
+        </div>
+
+        <div id="viewMode" class="hidden">
+            <h3>মেসেজটি লক করা আছে 🔑</h3>
+            <input type="password" id="checkPass" placeholder="পাসওয়ার্ড লিখুন">
+            <button onclick="decrypt()">আনলক করুন</button>
+            <div id="msgShow"></div>
+        </div>
+    </div>
+
+<script>
+    // ১. চেক করা ইউআরএল-এ ডাটা আছে কি না
+    const params = new URLSearchParams(window.location.search);
+    const data = params.get('d');
+    const hash = params.get('k');
+
+    if(data && hash) {
+        document.getElementById('createMode').classList.add('hidden');
+        document.getElementById('viewMode').classList.remove('hidden');
+    }
+
+    // ২. লিঙ্ক তৈরির লজিক
+    function makeLink() {
+        const txt = document.getElementById('text').value;
+        const ps = document.getElementById('pass').value;
+        if(!txt || !ps) return alert("মেসেজ ও পাসওয়ার্ড দিন");
+
+        const encMsg = btoa(encodeURIComponent(txt));
+        const encPass = btoa(ps);
+        
+        // বর্তমান পেজের URL নেওয়া
+        let currentURL = window.location.href.split('?')[0];
+        
+        // যদি লোকাল ফাইল হয় তবে ওয়ার্নিং দেওয়া
+        if(currentURL.startsWith('file') || currentURL.startsWith('content')) {
+            alert("সাবধান: আপনি এটি আপনার ফোন থেকে চালাচ্ছেন। এই লিঙ্কটি অন্য কারো ফোনে কাজ করবে না যদি না আপনি এটি ইন্টারনেটে (যেমন GitHub) আপলোড করেন।");
+        }
+
+        const link = `${currentURL}?d=${encMsg}&k=${encPass}`;
+        document.getElementById('finalURL').innerText = link;
+        document.getElementById('linkBox').style.display = 'block';
+    }
+
+    // ৩. আনলক করার লজিক
+    function decrypt() {
+        const input = document.getElementById('checkPass').value;
+        if(input === atob(hash)) {
+            const decoded = decodeURIComponent(atob(data));
+            const box = document.getElementById('msgShow');
+            box.innerText = "মেসেজ: " + decoded;
+            box.style.display = "block";
+        } else {
+            alert("ভুল পাসওয়ার্ড!");
+        }
+    }
+
+    // ৪. কপি করার ফাংশন (সঠিকভাবে কাজ করার জন্য)
+    function copyToClipboard() {
+        const text = document.getElementById('finalURL').innerText;
+        const dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        alert("লিঙ্ক কপি হয়েছে!");
+    }
+</script>
+</body>
+</html>
