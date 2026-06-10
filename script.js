@@ -29,14 +29,14 @@ function showCircle(status){
 
 function startCountdown(onDone){
   showCircle('\u23f3 Please wait...');
-  var s=35;var total=377;
+  var s=40;var total=377;
   numEl.textContent=s;
   arc.setAttribute('stroke','#6c47ff');
   arc.setAttribute('stroke-dashoffset','0');
   var iv=setInterval(function(){
     s--;
     numEl.textContent=s;
-    arc.setAttribute('stroke-dashoffset',(total/35)*(35-s));
+    arc.setAttribute('stroke-dashoffset',(total/40)*(40-s));
     if(s<=0){
       clearInterval(iv);
       numEl.textContent='\u26a1';
