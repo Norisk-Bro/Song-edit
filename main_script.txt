@@ -1,28 +1,83 @@
 --[[ 
-  🛡️ SECURED LOADER: SAJIB TOOLS OFFICIAL
-  🚀 ENCODING: BYTE-TABLE (STABLE VERSION)
+  🛡️ SAJIB TOOLS OFFICIAL - MAIN CORE
+  🚀 ENCODED BY AI
 ]]
 
--- এনকোড করা গিটহাব লিঙ্ক
-local _0xL = {104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,78,111,114,105,115,107,45,66,114,111,47,83,111,110,103,45,101,100,105,116,47,114,101,102,115,47,104,101,97,100,115,47,109\97\105\110\47\109\97\105\110\95\115\99\114\105\112\112\116\46\116\120\116}
+local _0xSaj = {
+    _0xUrl = "https://raw.githubusercontent.com/Norisk-Bro/Song-edit/main/expire_date.txt",
+    _0xMonths = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12},
+    _0xLib = "il2cpp.so",
+    _0xHon = "00008052C0035FD6",
+    _0xHof = "1F2003D5"
+}
 
--- টেবিল থেকে লিঙ্ক তৈরি করার ফাংশন
-local _0xU = ""
-for i=1, #_0xL do _0xU = _0xU .. string.char(_0xL[i]) end
+local _req = gg.makeRequest(_0xSaj._0xUrl)
+if not _req or _req.code ~= 200 then 
+    gg.alert("❌ Connection Error!")
+    os.exit() 
+end
 
-gg.toast("⏳ Synchronizing with Server...")
+local _s_date = _req.content:gsub("%s+", "")
+local _d, _m_s, _y = _s_date:match("(%d+)%-(%a+)%-(%d+)")
+local _m_n = _0xSaj._0xMonths[_m_s] or 0
+local _now = os.date("*t")
+local _exp = false
 
-local _req = gg.makeRequest(_0xU)
-
-if _req and _req.code == 200 then
-    local _run = load(_req.content)
-    if _run then 
-        _run() 
-    else 
-        gg.alert("❌ Main script content is invalid.") 
+if _now.year > tonumber(_y) then _exp = true
+elseif _now.year == tonumber(_y) then
+    if _now.month > _m_n then _exp = true
+    elseif _now.month == _m_n then
+        if _now.day > tonumber(_d) then _exp = true end
     end
-else
-    local _err = (_req and _req.code) or "No Response"
-    gg.alert("🚫 Access Denied!\nStatus Code: ".._err.."\n\n১. গিটহাব ফাইলটি Public কি না চেক করুন।\n২. একটি VPN কানেক্ট করে ট্রাই করুন।")
+end
+
+if _exp then
+    gg.alert("🚫 SCRIPT EXPIRED!\n📅 Date: ".._s_date)
     os.exit()
+end
+
+function _doPatch(_off, _hex)
+    local _inf = gg.getTargetInfo()
+    if not _inf then return end
+    local _rng = gg.getRangesList(_inf.nativeLibraryDir .. "/lib" .. _0xSaj._0xLib)
+    for _, v in ipairs(_rng) do
+        if gg.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
+            local _b = {}
+            _hex:gsub("..", function(x)
+                table.insert(_b, {address = v.start + _off + #_b, flags = 1, value = x .. "h"})
+            end)
+            gg.setValues(_b)
+        end
+    end
+end
+
+local _state = { pc = false }
+
+gg.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n✅ License Verified\n📅 Expire: ".._s_date.."\n━━━━━━━━━━━━━━━━━━━━", "START")
+
+function _ui()
+    local _status = _state.pc and "🔛 PC Logo [ ACTIVE ]" or "📴 PC Logo [ INACTIVE ]"
+    local _main = gg.choice({_status, "❌ EXIT"}, nil, "👑 SAJIB TOOLS OFFICIAL")
+    if _main == 1 then
+        if not _state.pc then
+            gg.toast("⏳ Activating...")
+            _doPatch(68968552, _0xSaj._0xHon)
+            _doPatch(68968968, _0xSaj._0xHon)
+            _state.pc = true
+            gg.toast("✅ Applied")
+        else
+            gg.toast("⏳ Restoring...")
+            _doPatch(68968552, _0xSaj._0xHof)
+            _doPatch(68968968, _0xSaj._0xHof)
+            _state.pc = false
+            gg.toast("❌ Restored")
+        end
+    elseif _main == 2 then os.exit() end
+end
+
+while true do
+    if gg.isVisible() then
+        gg.setVisible(false)
+        _ui()
+    end
 end
