@@ -15,12 +15,12 @@ document.getElementById('_akg_close').onclick=function(){ov.remove();};
 
 function startCountdown(onDone){
   circleWrap.style.display='flex'; btn.style.display='none'; inp.style.display='none'; document.getElementById('_akg_inp_wrap').style.display='none';
-  var s=20; // টাইমার ২০ সেকেন্ড করা হয়েছে
+  var s=25; // টাইমার ২০ সেকেন্ড করা হয়েছে
   var total=377;
   numEl.textContent=s;
   var iv=setInterval(function(){
     s--; numEl.textContent=s;
-    arc.setAttribute('stroke-dashoffset',(total/20)*(20-s)); // এনিমেশন ২০ সেকেন্ড অনুযায়ী
+    arc.setAttribute('stroke-dashoffset',(total/25)*(25-s)); // এনিমেশন ২০ সেকেন্ড অনুযায়ী
     if(s<=0){ clearInterval(iv); onDone(); }
   },1000);
 }
