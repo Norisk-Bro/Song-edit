@@ -1,13 +1,40 @@
 (function() {
-    alert("✅ Sajib Tools: Javascript Loaded Successfully!");
-    
-    // আপনার আসল কাজ এখানে লিখুন
-    document.body.style.border = "5px solid lime";
-    console.log("Script is running on: " + window.location.hostname);
-    
-    // উদাহরণ: একটি ছোট মেনু তৈরি
-    var div = document.createElement('div');
-    div.style = "position:fixed;top:10px;right:10px;z-index:9999;background:black;color:white;padding:10px;border:2px solid lime;";
-    div.innerHTML = "<b>SAJIB TOOLS MENU</b><br><button onclick='alert(\"Hack Active\")'>Activate</button>";
-    document.body.appendChild(div);
+    'use strict';
+    alert("🚀 SAJIB TOOLS: Bypass Engine Started!");
+
+    // ১. টাইমার স্কিপ করার ফাংশন
+    const skipTimer = () => {
+        window.setTimeout = function(fn, delay) {
+            return fn(); // টাইমারকে ০ করে দেয়
+        };
+    };
+
+    // ২. অটো ক্লিক করার ফাংশন
+    const autoClicker = () => {
+        // যেসব বাটনে "Continue", "Next", বা "Get Link" লেখা আছে তাদের খুঁজে বের করে
+        const buttons = document.querySelectorAll('button, a, div');
+        buttons.forEach(btn => {
+            const text = btn.innerText.toLowerCase();
+            if (text.includes('continue') || text.includes('next') || text.includes('get link') || text.includes('verify')) {
+                btn.click();
+                console.log("Clicked: " + text);
+            }
+        });
+    };
+
+    // ৩. বিজ্ঞাপন বা পপ-আপ রিমুভ করা
+    const removeAds = () => {
+        const ads = document.querySelectorAll('iframe, .ads, #ad-container');
+        ads.forEach(ad => ad.remove());
+    };
+
+    // ৪. প্রতি ১ সেকেন্ড পরপর চেক করবে নতুন বাটন এসেছে কি না
+    setInterval(() => {
+        skipTimer();
+        autoClicker();
+        removeAds();
+    }, 1000);
+
+    // ৫. পেজের টাইটেল চেঞ্জ করে দিবে যাতে বুঝা যায় এটি কাজ করছে
+    document.title = "🔥 BYPASSING... 🔥";
 })();
