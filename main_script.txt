@@ -1,5 +1,5 @@
 --[[ 
-  🛡️ SAJIB TOOLS OFFICIAL - ULTIMATE SYSTEM
+  🛡️ SAJIB TOOLS OFFICIAL
 ]]
 
 local _0xS = {
@@ -9,19 +9,26 @@ local _0xS = {
 
 local _G = gg
 local _O = os
+local function _genHWID()
+    local _inf = _G.getTargetInfo()
+    local _raw = _inf.nativeLibraryDir:sub(-5) .. _inf.packageName:sub(1,4)
+    local _hex = ""
+    for i = 1, #_raw do
+        local _char = _raw:sub(i,i):upper()
+        if _char:match("[%w]") then
+            _hex = _hex .. "X" .. _char
+        end
+    end
+    return _hex .. "X"
+end
 
-local _id = _G.getTargetInfo().packageName:sub(1,3) .. _G.getTargetInfo().nativeLibraryDir:sub(-8)
-local _myHWID = _O.date("%j") .. _id:gsub("/", "X")
-
--- [ SERVER DATA FETCH ]
+local _myHWID = _genHWID()
 local _req = _G.makeRequest(_0xS[1])
-if not _req or _req.code ~= 200 then _G.alert("❌ Server Connection Error") _O.exit() end
+if not _req or _req.code ~= 200 then _G.alert("❌ Server Error") _O.exit() end
 
 local _auth = false
-local _uName = ""
-local _uDate = ""
+local _uName, _uDate = "", ""
 
--- [ DATA PARSING ]
 for line in _req.content:gmatch("[^\r\n]+") do
     local name, id, date = line:match("(.+)%+(.+)%+(.+)")
     if id == _myHWID then
@@ -34,23 +41,20 @@ end
 
 if not _auth then
     _G.copyText(_myHWID)
-    _G.alert("🚫 NOT REGISTERED!\n\nYour HWID: ".._myHWID.."\n\n(ID Copied! Send to Sajib Tools Official)")
+    _G.alert("🚫 NOT REGISTERED!\n\n👤 User: Guest\n🔑 HWID: ".._myHWID.."\n\n(ID Copied! Send to Sajib Tools Official)")
     _O.exit()
 end
-
--- [ EXPIRY VERIFICATION ]
 local _d, _m, _y = _uDate:match("(%d+)%-(%a+)%-(%d+)")
 local _mn = _0xS[2][_m] or 0
 local _now = _O.date("*t")
 
 if _now.year > tonumber(_y) or (_now.year == tonumber(_y) and _now.month > _mn) or (_now.year == tonumber(_y) and _now.month == _mn and _now.day > tonumber(_d)) then
-    _G.alert("🚫 LICENSE EXPIRED!\n\n👤 User: ".._uName.."\n📅 Date: ".._uDate.."\n📢 Contact: SAJIB TOOLS OFFICIAL")
+    _G.alert("🚫 EXPIRED!\n👤 User: ".._uName.."\n📅 Date: ".._uDate)
     _O.exit()
 end
-
--- [ MEMORY PATCHER ]
 local _patch = function(_off, _hex)
-    local _rl = _G.getRangesList(_G.getTargetInfo().nativeLibraryDir .. "/lib\105\108\50\99\112\112\46\115\111")
+    local _lib = "\105\108\50\99\112\112\46\115\111"
+    local _rl = _G.getRangesList(_G.getTargetInfo().nativeLibraryDir .. "/lib" .. _lib)
     for _, v in ipairs(_rl) do
         if _G.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
             local _b = {}
@@ -62,13 +66,10 @@ end
 
 local _st = { pc = false }
 
--- [ WELCOME UI ]
 _G.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n👤 Welcome: ".._uName.."\n✅ Status: Authorized\n📅 Expire: ".._uDate.."\n━━━━━━━━━━━━━━━━━━━━", "START SCRIPT")
 
 function _menu()
-    local _txt = _st.pc and "🔛 PC [ ON ]" or "📴 PC [ OFF ]"
-    local _sel = _G.choice({_txt, "❌ EXIT"}, nil, "👑 SAJIB TOOLS OFFICIAL\n👤 User: ".._uName.."\n📅 Expire: ".._uDate)
-    
+    local _sel = _G.choice({_st.pc and "🔛 PC [ ON ]" or "📴 PC [ OFF ]", "❌ EXIT"}, nil, "👑 SAJIB TOOLS\n👤 User: ".._uName.."\n📅 Expire: ".._uDate)
     if _sel == 1 then
         _G.toast("⏳ Working...")
         if not _st.pc then
