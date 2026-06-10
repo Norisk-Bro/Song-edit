@@ -1,5 +1,5 @@
 --[[ 
-  🛡️: SAJIB TOOLS OFFICIAL
+  🛡️ S: SAJIB TOOLS OFFICIAL
 ]]
 
 local _0xDec = function(_str, _key)
@@ -13,22 +13,17 @@ local _0xDec = function(_str, _key)
 end
 
 local _0xK = "L04D3R_S@JIB"
--- Updated XOR link with refs/heads/main support
-local _0xU = _0xDec("\31\4\4\4\55\106\10\5\49\1\11\103\41\5\21\6\4\4\5\21\5\21\11\103\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\10\44\25\24\41\5\21\6\4\4\5\21\11\103\41\5\21\6\4\4\5\21\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\5\21\6\4\4\5\21\11\103\41\5\21\6\4\4\5\21\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\5\21\6\4\4\5\21", _0xK)
+-- Re-Encoded Correct URL
+local _0xU = _0xDec("\20\4\4\4\55\106\10\5\49\1\11\103\41\5\21\6\4\4\5\21\5\21\11\103\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\10\44\25\24\41\5\21\6\4\4\5\21\5\21\11\103\41\5\21\6\4\4\5\21\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\5\21\6\4\4\5\21", _0xK)
 
-gg.toast("⏳ Connecting to server...")
+gg.toast("⏳ Synchronizing...")
 
 local _req = gg.makeRequest(_0xU)
 
 if _req and _req.code == 200 then
-    local _run = load(_req.content)
-    if _run then 
-        _run() 
-    else 
-        gg.alert("❌ Main Script Error!") 
-    end
+    load(_req.content)()
 else
-    -- Debugging info
-    local _code = (_req and _req.code) or "No Response"
-    gg.alert("🚫 Connection Failed!\nStatus Code: ".._code.."\n\nMake sure your GitHub file is PUBLIC!")
+    local _c = (_req and _req.code) or "No Response"
+    gg.alert("🚫 Connection Failed!\nStatus Code: ".._c.."\n\nটিপস: একটি VPN কানেক্ট করে ট্রাই করুন।")
+    os.exit()
 end
