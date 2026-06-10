@@ -1,71 +1,86 @@
 --[[ 
-  🛡️ SAJIB TOOLS OFFICIAL - PROTECTED 
+  🛡️ SAJIB TOOLS OFFICIAL - ULTIMATE SYSTEM
 ]]
 
-local _0xO = {
-    [1] = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\78\111\114\105\115\107\45\66\114\111\47\83\111\110\103\45\101\100\105\116\47\109\97\105\110\47\101\120\112\105\114\101\95\100\97\116\101\46\116\120\116", -- Expire Link
-    [2] = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12},
-    [3] = "\105\108\50\99\112\112\46\115\111", -- libil2cpp.so
-    [4] = "\48\48\48\48\56\48\53\50\67\48\48\51\53\70\68\54", -- ON HEX
-    [5] = "\49\70\50\48\48\51\68\53" -- OFF HEX
+local _0xS = {
+    [1] = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\78\111\114\105\115\107\45\66\114\111\47\83\111\110\103\45\101\100\105\116\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\101\120\112\105\114\101\95\100\97\116\101\46\116\120\116",
+    [2] = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12}
 }
 
-local _0xG = gg
-local _0xR = _0xG.makeRequest(_0xO[1])
+local _G = gg
+local _O = os
 
-if not _0xR or _0xR.code ~= 200 then _0xG.alert("❌ Error: Verification Failed") os.exit() end
+local _id = _G.getTargetInfo().packageName:sub(1,3) .. _G.getTargetInfo().nativeLibraryDir:sub(-8)
+local _myHWID = _O.date("%j") .. _id:gsub("/", "X")
 
-local _0xT = _0xR.content:gsub("%s+", "")
-local _0xD, _0xM, _0xY = _0xT:match("(%d+)%-(%a+)%-(%d+)")
-local _0xMN = _0xO[2][_0xM] or 0
-local _0xNow = os.date("*t")
+-- [ SERVER DATA FETCH ]
+local _req = _G.makeRequest(_0xS[1])
+if not _req or _req.code ~= 200 then _G.alert("❌ Server Connection Error") _O.exit() end
 
-if _0xNow.year > tonumber(_0xY) or (_0xNow.year == tonumber(_0xY) and _0xNow.month > _0xMN) or (_0xNow.year == tonumber(_0xY) and _0xNow.month == _0xMN and _0xNow.day > tonumber(_0xD)) then
-    _0xG.alert("🚫 LICENSE EXPIRED\n📅 Date: ".._0xT)
-    os.exit()
+local _auth = false
+local _uName = ""
+local _uDate = ""
+
+-- [ DATA PARSING ]
+for line in _req.content:gmatch("[^\r\n]+") do
+    local name, id, date = line:match("(.+)%+(.+)%+(.+)")
+    if id == _myHWID then
+        _auth = true
+        _uName = name
+        _uDate = date
+        break
+    end
 end
 
-local _0xP = function(_0xOff, _0xHx)
-    local _0xInf = _0xG.getTargetInfo()
-    if not _0xInf then return end
-    local _0xRL = _0xG.getRangesList(_0xInf.nativeLibraryDir .. "/lib" .. _0xO[3])
-    for _, v in ipairs(_0xRL) do
-        if _0xG.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
-            local _0xB = {}
-            _0xHx:gsub("..", function(x)
-                table.insert(_0xB, {address = v.start + _0xOff + #_0xB, flags = 1, value = x .. "h"})
-            end)
-            _0xG.setValues(_0xB)
+if not _auth then
+    _G.copyText(_myHWID)
+    _G.alert("🚫 NOT REGISTERED!\n\nYour HWID: ".._myHWID.."\n\n(ID Copied! Send to Sajib Tools Official)")
+    _O.exit()
+end
+
+-- [ EXPIRY VERIFICATION ]
+local _d, _m, _y = _uDate:match("(%d+)%-(%a+)%-(%d+)")
+local _mn = _0xS[2][_m] or 0
+local _now = _O.date("*t")
+
+if _now.year > tonumber(_y) or (_now.year == tonumber(_y) and _now.month > _mn) or (_now.year == tonumber(_y) and _now.month == _mn and _now.day > tonumber(_d)) then
+    _G.alert("🚫 LICENSE EXPIRED!\n\n👤 User: ".._uName.."\n📅 Date: ".._uDate.."\n📢 Contact: SAJIB TOOLS OFFICIAL")
+    _O.exit()
+end
+
+-- [ MEMORY PATCHER ]
+local _patch = function(_off, _hex)
+    local _rl = _G.getRangesList(_G.getTargetInfo().nativeLibraryDir .. "/lib\105\108\50\99\112\112\46\115\111")
+    for _, v in ipairs(_rl) do
+        if _G.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
+            local _b = {}
+            _hex:gsub("..", function(x) table.insert(_b, {address = v.start + _off + #_b, flags = 1, value = x .. "h"}) end)
+            _G.setValues(_b)
         end
     end
 end
 
-local _0xSt = { pc = false }
-_0xG.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n✅ License Verified\n📅 Expire: ".._0xT.."\n━━━━━━━━━━━━━━━━━━━━", "START")
+local _st = { pc = false }
 
-function _0xMenu()
-    local _0xTxt = _0xSt.pc and "🔛 PC Logo [ ON ]" or "📴 PC Logo [ OFF ]"
-    local _0xCh = _0xG.choice({_0xTxt, "❌ CLOSE"}, nil, "👑 SAJIB TOOLS")
-    if _0xCh == 1 then
-        if not _0xSt.pc then
-            _0xG.toast("⏳ Activating...")
-            _0xP(68968552, _0xO[4])
-            _0xP(68968968, _0xO[4])
-            _0xSt.pc = true
-            _0xG.toast("✅ Applied")
+-- [ WELCOME UI ]
+_G.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n👤 Welcome: ".._uName.."\n✅ Status: Authorized\n📅 Expire: ".._uDate.."\n━━━━━━━━━━━━━━━━━━━━", "START SCRIPT")
+
+function _menu()
+    local _txt = _st.pc and "🔛 PC [ ON ]" or "📴 PC [ OFF ]"
+    local _sel = _G.choice({_txt, "❌ EXIT"}, nil, "👑 SAJIB TOOLS OFFICIAL\n👤 User: ".._uName.."\n📅 Expire: ".._uDate)
+    
+    if _sel == 1 then
+        _G.toast("⏳ Working...")
+        if not _st.pc then
+            _patch(68968552, "\48\48\48\48\56\48\53\50\67\48\48\51\53\70\68\54")
+            _patch(68968968, "\48\48\48\48\56\48\53\50\67\48\48\51\53\70\68\54")
+            _st.pc = true
         else
-            _0xG.toast("⏳ Restoring...")
-            _0xP(68968552, _0xO[5])
-            _0xP(68968968, _0xO[5])
-            _0xSt.pc = false
-            _0xG.toast("❌ Restored")
+            _patch(68968552, "\49\70\50\48\48\51\68\53")
+            _patch(68968968, "\49\70\50\48\48\51\68\53")
+            _st.pc = false
         end
-    elseif _0xCh == 2 then os.exit() end
+    elseif _sel == 2 then _O.exit() end
 end
 
-while true do
-    if _0xG.isVisible() then
-        _0xG.setVisible(false)
-        _0xMenu()
-    end
-end
+while true do if _G.isVisible() then _G.setVisible(false) _menu() end end
