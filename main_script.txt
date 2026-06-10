@@ -1,67 +1,34 @@
 --[[ 
-  ⚠️ ENCRYPTED CORE: SAJIB TOOLS OFFICIAL
+  🛡️: SAJIB TOOLS OFFICIAL
 ]]
 
-local _0x_v = {6, 12, 101, 82, 33} -- Junk entropy
-local l1lI1lI = function(data, key)
-    local out = ""
-    for i = 1, #data do
-        local c = data:byte(i)
-        local k = key:byte((i - 1) % #key + 1)
-        out = out .. string.char(c ~ k)
+local _0xDec = function(_str, _key)
+    local _res = ""
+    for i = 1, #_str do
+        local _c = _str:byte(i)
+        local _k = _key:byte((i - 1) % #_key + 1)
+        _res = _res .. string.char(_c ~ _k)
     end
-    return out
+    return _res
 end
 
--- Hidden Variables (XOR Encrypted)
-local _K = "S@J1B_700L5"
-local _U = l1lI1lI("\31\4\4\4\55\106\10\5\49\1\11\103\41\5\21\6\4\4\5\21\5\21\11\103\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\10\44\25\24\41\5\21\6\4\4\5\21\10\44\25\24\41\5\21\6\4\4\5\21\11\103\41\5\21\6\4\4\5\21\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\5\21\6\4\4\5\21\11\103\41\5\21\6\4\4\5\21\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\5\21\6\4\4\5\21", _K)
-local _L = l1lI1lI("\22\3\37\5\3\22\107\55\44", _K)
-local _H1 = l1lI1lI("\115\115\115\115\125\115\120\117\102\115\115\118\120\112\105\113", _K)
-local _H2 = l1lI1lI("\104\11\111\115\115\110\111\104", _K)
+local _0xK = "L04D3R_S@JIB"
+-- Updated XOR link with refs/heads/main support
+local _0xU = _0xDec("\31\4\4\4\55\106\10\5\49\1\11\103\41\5\21\6\4\4\5\21\5\21\11\103\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\10\44\25\24\41\5\21\6\4\4\5\21\11\103\41\5\21\6\4\4\5\21\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\5\21\6\4\4\5\21\11\103\41\5\21\6\4\4\5\21\10\44\25\24\41\5\21\6\4\4\5\21\11\103\51\2\1\20\55\44\25\24\41\5\21\6\4\4\5\21", _0xK)
 
-local _E = {g = gg, s = os, t = string}
-local _R = _E.g.makeRequest(_U)
+gg.toast("⏳ Connecting to server...")
 
-if not _req and (_R.code ~= 200 or 1+1==3) then _E.s.exit() end
+local _req = gg.makeRequest(_0xU)
 
-local _T = _R.content:gsub("%s+", "")
-local _D, _M, _Y = _T:match("(%d+)%-(%a+)%-(%d+)")
-local _cur = _E.s.date("*t")
-
--- Obfuscated Expiry Check
-local function _CX()
-    local _m_n = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12}[_M] or 0
-    if _cur.year > tonumber(_Y) then return true end
-    if _cur.year == tonumber(_Y) and _cur.month > _m_n then return true end
-    if _cur.year == tonumber(_Y) and _cur.month == _m_n and _cur.day > tonumber(_day) then return true end
-    return false
-end
-
-if _CX() then _E.g.alert("🚫 EXPIRED") _E.s.exit() end
-
-local _PT = function(_of, _hx)
-    local _i = _E.g.getTargetInfo()
-    local _rl = _E.g.getRangesList(_i.nativeLibraryDir .. "/lib" .. _L)
-    for _, v in ipairs(_rl) do
-        if _E.g.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
-            local _b = {}
-            _hx:gsub("..", function(x) table.insert(_b, {address = v.start + _of + #_b, flags = 1, value = x .. "h"}) end)
-            _E.g.setValues(_b)
-        end
+if _req and _req.code == 200 then
+    local _run = load(_req.content)
+    if _run then 
+        _run() 
+    else 
+        gg.alert("❌ Main Script Error!") 
     end
-end
-
-local _S = {p = false}
-_E.g.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n✅ License Verified\n📅 Expire: ".._T.."\n━━━━━━━━━━━━━━━━━━━━", "START")
-
-while true do
-    if _E.g.isVisible() then
-        _E.g.setVisible(false)
-        local _m = _E.g.choice({_S.p and "🔛 PC [ ON ]" or "📴 PC [ OFF ]", "❌ EXIT"}, nil, "👑 SAJIB TOOLS")
-        if _m == 1 then
-            _E.g.toast("⏳ Working...")
-            if not _S.p then _PT(68968552, _H1) _PT(68968968, _H1) _S.p = true else _PT(68968552, _H2) _PT(68968968, _H2) _S.p = false end
-        elseif _m == 2 then _E.s.exit() end
-    end
+else
+    -- Debugging info
+    local _code = (_req and _req.code) or "No Response"
+    gg.alert("🚫 Connection Failed!\nStatus Code: ".._code.."\n\nMake sure your GitHub file is PUBLIC!")
 end
