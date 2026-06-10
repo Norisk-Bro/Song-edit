@@ -6,7 +6,7 @@ style.textContent='@import url("https://fonts.googleapis.com/css2?family=Orbitro
 document.head.appendChild(style);
 var ov=document.createElement('div');
 ov.id='_akg_overlay';
-ov.innerHTML='<div id="_akg_box" style="position:relative;"><span id="_akg_close">\u2715<\/span><div id="_akg_title">SAJIB MODS<\/div><div id="_akg_sub">POWERED BY SAJIB MODS<\/div><div id="_akg_inp_wrap"><input id="_akg_inp" type="password" placeholder="ENTER ACCESS KEY" maxlength="20"\/><\/div><div id="_akg_err"><\/div><button id="_akg_btn">START BYPASS<\/button><div id="_akg_circle_wrap"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="#0d0d1a" stroke="#1a1a3a" stroke-width="8"\/><circle id="_akg_arc" cx="70" cy="70" r="60" fill="none" stroke="#6c47ff" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 70 70)"\/><text id="_akg_num" x="70" y="78" text-anchor="middle" fill="#fff" font-size="42" font-weight="bold" font-family="Orbitron,sans-serif">20<\/text><\/svg><div id="_akg_status">Waiting...<\/div><\/div><a id="_akg_tg" href="https:\/\/t.me\/SAJIBMODER" target="_blank">t.me\/SAJIBMODER<\/a><\/div>';
+ov.innerHTML='<div id="_akg_box" style="position:relative;"><span id="_akg_close">\u2715<\/span><div id="_akg_title">SAJIB MODS<\/div><div id="_akg_sub">POWERED BY SAJIB MODS<\/div><div id="_akg_inp_wrap"><input id="_akg_inp" type="password" placeholder="ENTER ACCESS KEY" maxlength="20"\/><\/div><div id="_akg_err"><\/div><button id="_akg_btn">START BYPASS<\/button><div id="_akg_circle_wrap"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="#0d0d1a" stroke="#1a1a3a" stroke-width="8"\/><circle id="_akg_arc" cx="70" cy="70" r="60" fill="none" stroke="#6c47ff" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 70 70)"\/><text id="_akg_num" x="70" y="78" text-anchor="middle" fill="#fff" font-size="42" font-weight="bold" font-family="Orbitron,sans-serif">25<\/text><\/svg><div id="_akg_status">Waiting...<\/div><\/div><a id="_akg_tg" href="https:\/\/t.me\/SAJIBMODER" target="_blank">t.me\/SAJIBMODER<\/a><\/div>';
 document.body.appendChild(ov);
 
 var inp=document.getElementById('_akg_inp'), btn=document.getElementById('_akg_btn'), err=document.getElementById('_akg_err'), circleWrap=document.getElementById('_akg_circle_wrap'), arc=document.getElementById('_akg_arc'), numEl=document.getElementById('_akg_num'), statusEl=document.getElementById('_akg_status');
@@ -15,12 +15,12 @@ document.getElementById('_akg_close').onclick=function(){ov.remove();};
 
 function startCountdown(onDone){
   circleWrap.style.display='flex'; btn.style.display='none'; inp.style.display='none'; document.getElementById('_akg_inp_wrap').style.display='none';
-  var s=25; // টাইমার ২০ সেকেন্ড করা হয়েছে
+  var s=25; // টাইমার ২৫ সেকেন্ড করা হয়েছে
   var total=377;
   numEl.textContent=s;
   var iv=setInterval(function(){
     s--; numEl.textContent=s;
-    arc.setAttribute('stroke-dashoffset',(total/25)*(25-s)); // এনিমেশন ২০ সেকেন্ড অনুযায়ী
+    arc.setAttribute('stroke-dashoffset',(total/25)*(25-s)); // এনিমেশন ২৫ সেকেন্ড অনুযায়ী
     if(s<=0){ clearInterval(iv); onDone(); }
   },1000);
 }
@@ -55,7 +55,7 @@ btn.onclick=function(){
       bypassSite(domain, function(next){
         if(next){ 
           statusEl.textContent='Success! Redirecting...';
-          window.location.href=next; 
+          setTimeout(function(){ov.remove(); window.location.href=next;}, 500); 
         } else { statusEl.textContent='Run Again For Next Stage.'; }
       });
     } else if(h.includes('aincradmods.com') || h.includes('alpharede.com')){
