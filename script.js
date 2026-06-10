@@ -1,4 +1,4 @@
-javascript:(function(){
+(function(){
 if(document.getElementById('_akg_overlay'))return;
 var h=location.host;
 var style=document.createElement('style');
@@ -6,8 +6,9 @@ style.textContent='@import url("https://fonts.googleapis.com/css2?family=Orbitro
 document.head.appendChild(style);
 var ov=document.createElement('div');
 ov.id='_akg_overlay';
-ov.innerHTML='<div id="_akg_box" style="position:relative;"><span id="_akg_close">\u2715<\/span><div id="_akg_title">\u2694 SAJIB MODS <\/div><div id="_akg_sub"> POWER BY\ SAJIB MODS<\/div><div id="_akg_inp_wrap"><input id="_akg_inp" type="password" placeholder="ENTER ACCESS KEY" maxlength="20"\/><\/div><div id="_akg_err"><\/div><button id="_akg_btn">UNLOCK & GENERATE<\/button><div id="_akg_circle_wrap"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="#0d0d1a" stroke="#1a1a3a" stroke-width="8"\/><circle id="_akg_arc" cx="70" cy="70" r="60" fill="none" stroke="#6c47ff" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 70 70)"\/><text id="_akg_num" x="70" y="78" text-anchor="middle" fill="#fff" font-size="42" font-weight="bold" font-family="Orbitron,sans-serif">25<\/text><\/svg><div id="_akg_status">\u23f3 Waiting...<\/div><\/div><a id="_akg_tg" href="https:\/\/t.me\/SAJIBMODER" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#6c47ff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.26l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.3z"\/><\/svg>t.me\/SAJIBMODER<\/a><\/div>';
+ov.innerHTML='<div id="_akg_box" style="position:relative;"><span id="_akg_close">\u2715<\/span><div id="_akg_title">\u2694 SAJIB MODS <\/div><div id="_akg_sub"> POWER BY SAJIB MODS<\/div><div id="_akg_inp_wrap"><input id="_akg_inp" type="password" placeholder="ENTER ACCESS KEY" maxlength="20"\/><\/div><div id="_akg_err"><\/div><button id="_akg_btn">UNLOCK & GENERATE<\/button><div id="_akg_circle_wrap"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="#0d0d1a" stroke="#1a1a3a" stroke-width="8"\/><circle id="_akg_arc" cx="70" cy="70" r="60" fill="none" stroke="#6c47ff" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 70 70)"\/><text id="_akg_num" x="70" y="78" text-anchor="middle" fill="#fff" font-size="42" font-weight="bold" font-family="Orbitron,sans-serif">25<\/text><\/svg><div id="_akg_status">\u23f3 Waiting...<\/div><\/div><a id="_akg_tg" href="https:\/\/t.me\/SAJIBMODER" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#6c47ff"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.26l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.3z"\/><\/svg>t.me\/SAJIBMODER<\/a><\/div>';
 document.body.appendChild(ov);
+
 var inp=document.getElementById('_akg_inp');
 var btn=document.getElementById('_akg_btn');
 var err=document.getElementById('_akg_err');
@@ -15,6 +16,7 @@ var circleWrap=document.getElementById('_akg_circle_wrap');
 var arc=document.getElementById('_akg_arc');
 var numEl=document.getElementById('_akg_num');
 var statusEl=document.getElementById('_akg_status');
+
 document.getElementById('_akg_close').onclick=function(){ov.remove();};
 ov.onclick=function(e){if(e.target===ov)ov.remove();};
 
@@ -29,14 +31,14 @@ function showCircle(status){
 
 function startCountdown(onDone){
   showCircle('\u23f3 Please wait...');
-  var s=40;var total=377;
+  var s=25;var total=377;
   numEl.textContent=s;
   arc.setAttribute('stroke','#6c47ff');
   arc.setAttribute('stroke-dashoffset','0');
   var iv=setInterval(function(){
     s--;
     numEl.textContent=s;
-    arc.setAttribute('stroke-dashoffset',(total/40)*(40-s));
+    arc.setAttribute('stroke-dashoffset',(total/25)*(25-s));
     if(s<=0){
       clearInterval(iv);
       numEl.textContent='\u26a1';
@@ -47,9 +49,8 @@ function startCountdown(onDone){
   },1000);
 }
 
-
 function bypassSite(domain,cb){
-  var proto='https';
+  var proto=domain==='rodaemotor.com'?'http':'http';
   fetch(proto+'://'+domain+'/api/session-info',{credentials:'include',headers:{'Accept':'*/*'}})
   .then(function(r){return r.json();})
   .then(function(d){
@@ -101,13 +102,17 @@ function runFullBypass(){
 
 btn.onclick=function(){
   var val=inp.value.trim().toUpperCase();
-  if(val!=='@SAJIBMODER'){err.textContent='\u274c Wrong key! Access denied.';inp.value='';return;}
+  if(val!=='@SAJIBMODER'){
+    err.textContent='\u274c Wrong key! Access denied.';
+    inp.value='';
+    return;
+  }
   err.textContent='';
   if(h.includes('tarviral.com')||h.includes('rodaemotor.com')){
     runFullBypass();
   }else if(h.includes('aincradmods.com')){
     ov.remove();
-    fetch('https://aincradmods.com/getkey.data',{method:'POST',credentials:'include',headers:{'content-type':'application/x-www-form-urlencoded;charset=UTF-8'}})
+    fetch('https://aincradmods.com/getkey.data',{method:'POST',credentials:'include',headers:{'content-type':'application/x-www-form-urlencoded;charset=UTF-8','accept':'*/*','origin':'https://aincradmods.com','referer':'https://aincradmods.com/getkey','x-requested-with':'mark.via.gp'}})
     .then(function(){window.location.href='https://alpharede.com/aincrad2';})
     .catch(function(){window.location.href='https://alpharede.com/aincrad2';});
   }else if(h.includes('alpharede.com')){
@@ -117,6 +122,7 @@ btn.onclick=function(){
     err.textContent='\u26a0 Open the specific site first!';
   }
 };
+
 inp.addEventListener('keydown',function(e){if(e.key==='Enter')btn.click();});
 inp.focus();
 })();
