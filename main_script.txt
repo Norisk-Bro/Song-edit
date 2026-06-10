@@ -1,1 +1,82 @@
+--[[ 
+  🛡️ SAJIB TOOLS OFFICIAL - MAIN CORE
+]]
 
+local _0xSaj = {
+    _0xUrl = "https://raw.githubusercontent.com/Norisk-Bro/Song-edit/main/expire_date.txt",
+    _0xMonths = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12},
+    _0xLib = "il2cpp.so",
+    _0xHon = "00008052C0035FD6",
+    _0xHof = "1F2003D5"
+}
+
+local _req = gg.makeRequest(_0xSaj._0xUrl)
+if not _req or _req.code ~= 200 then 
+    gg.alert("❌ Connection Error!")
+    os.exit() 
+end
+
+local _s_date = _req.content:gsub("%s+", "")
+local _d, _m_s, _y = _s_date:match("(%d+)%-(%a+)%-(%d+)")
+local _m_n = _0xSaj._0xMonths[_m_s] or 0
+local _now = os.date("*t")
+local _exp = false
+
+if _now.year > tonumber(_y) then _exp = true
+elseif _now.year == tonumber(_y) then
+    if _now.month > _m_n then _exp = true
+    elseif _now.month == _m_n then
+        if _now.day > tonumber(_d) then _exp = true end
+    end
+end
+
+if _exp then
+    gg.alert("🚫 SCRIPT EXPIRED!\n📅 Date: ".._s_date)
+    os.exit()
+end
+
+function _doPatch(_off, _hex)
+    local _inf = gg.getTargetInfo()
+    if not _inf then return end
+    local _rng = gg.getRangesList(_inf.nativeLibraryDir .. "/lib" .. _0xSaj._0xLib)
+    for _, v in ipairs(_rng) do
+        if gg.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
+            local _b = {}
+            _hex:gsub("..", function(x)
+                table.insert(_b, {address = v.start + _off + #_b, flags = 1, value = x .. "h"})
+            end)
+            gg.setValues(_b)
+        end
+    end
+end
+
+local _state = { pc = false }
+
+gg.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n✅ License Verified\n📅 Expire: ".._s_date.."\n━━━━━━━━━━━━━━━━━━━━", "START")
+
+function _ui()
+    local _status = _state.pc and "🔛 PC Logo [ ACTIVE ]" or "📴 PC Logo [ INACTIVE ]"
+    local _main = gg.choice({_status, "❌ EXIT"}, nil, "👑 SAJIB TOOLS OFFICIAL")
+    if _main == 1 then
+        if not _state.pc then
+            gg.toast("⏳ Activating...")
+            _doPatch(68968552, _0xSaj._0xHon)
+            _doPatch(68968968, _0xSaj._0xHon)
+            _state.pc = true
+            gg.toast("✅ Applied")
+        else
+            gg.toast("⏳ Restoring...")
+            _doPatch(68968552, _0xSaj._0xHof)
+            _doPatch(68968968, _0xSaj._0xHof)
+            _state.pc = false
+            gg.toast("❌ Restored")
+        end
+    elseif _main == 2 then os.exit() end
+end
+
+while true do
+    if gg.isVisible() then
+        gg.setVisible(false)
+        _ui()
+    end
+end
