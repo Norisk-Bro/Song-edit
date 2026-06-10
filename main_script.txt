@@ -1,83 +1,71 @@
 --[[ 
-  🛡️ SAJIB TOOLS OFFICIAL - CORE
-  🚀 STABLE ENCODING
+  🛡️ SAJIB TOOLS OFFICIAL - PROTECTED 
 ]]
 
-local _0xLib = "\105\108\50\99\112\112\46\115\111"
-local _0xUrl = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\78\111\114\105\115\107\45\66\114\111\47\83\111\110\103\45\101\100\105\116\47\109\97\105\110\47\101\120\112\105\114\101\95\100\97\116\101\46\116\120\116"
+local _0xO = {
+    [1] = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\78\111\114\105\115\107\45\66\114\111\47\83\111\110\103\45\101\100\105\116\47\109\97\105\110\47\101\120\112\105\114\101\95\100\97\116\101\46\116\120\116", -- Expire Link
+    [2] = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12},
+    [3] = "\105\108\50\99\112\112\46\115\111", -- libil2cpp.so
+    [4] = "\48\48\48\48\56\48\53\50\67\48\48\51\53\70\68\54", -- ON HEX
+    [5] = "\49\70\50\48\48\51\68\53" -- OFF HEX
+}
 
-local _0xMonths = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12}
+local _0xG = gg
+local _0xR = _0xG.makeRequest(_0xO[1])
 
--- Fetch Expire Date
-local _req = gg.makeRequest(_0xUrl)
-if not _req or _req.code ~= 200 then
-    gg.alert("❌ Server Error: Expire check failed.")
+if not _0xR or _0xR.code ~= 200 then _0xG.alert("❌ Error: Verification Failed") os.exit() end
+
+local _0xT = _0xR.content:gsub("%s+", "")
+local _0xD, _0xM, _0xY = _0xT:match("(%d+)%-(%a+)%-(%d+)")
+local _0xMN = _0xO[2][_0xM] or 0
+local _0xNow = os.date("*t")
+
+if _0xNow.year > tonumber(_0xY) or (_0xNow.year == tonumber(_0xY) and _0xNow.month > _0xMN) or (_0xNow.year == tonumber(_0xY) and _0xNow.month == _0xMN and _0xNow.day > tonumber(_0xD)) then
+    _0xG.alert("🚫 LICENSE EXPIRED\n📅 Date: ".._0xT)
     os.exit()
 end
 
-local _server_date = _req.content:gsub("%s+", "")
-local _day, _mon_str, _year = _server_date:match("(%d+)%-(%a+)%-(%d+)")
-local _mon_num = _0xMonths[_mon_str] or 0
-local _cur = os.date("*t")
-local _expired = false
-
-if _cur.year > tonumber(_year) then _expired = true
-elseif _cur.year == tonumber(_year) then
-    if _cur.month > _mon_num then _expired = true
-    elseif _cur.month == _mon_num then
-        if _cur.day > tonumber(_day) then _expired = true end
-    end
-end
-
-if _expired then
-    gg.alert("🚫 SCRIPT EXPIRED!\n📅 Date: ".._server_date)
-    os.exit()
-end
-
--- Memory Patch Function
-function _patch(_off, _hex)
-    local _info = gg.getTargetInfo()
-    if not _info then return end
-    local _r = gg.getRangesList(_info.nativeLibraryDir .. "/lib" .. _0xLib)
-    for _, v in ipairs(_r) do
-        if gg.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
-            local _b = {}
-            _hex:gsub("..", function(x)
-                table.insert(_b, {address = v.start + _off + #_b, flags = 1, value = x .. "h"})
+local _0xP = function(_0xOff, _0xHx)
+    local _0xInf = _0xG.getTargetInfo()
+    if not _0xInf then return end
+    local _0xRL = _0xG.getRangesList(_0xInf.nativeLibraryDir .. "/lib" .. _0xO[3])
+    for _, v in ipairs(_0xRL) do
+        if _0xG.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
+            local _0xB = {}
+            _0xHx:gsub("..", function(x)
+                table.insert(_0xB, {address = v.start + _0xOff + #_0xB, flags = 1, value = x .. "h"})
             end)
-            gg.setValues(_b)
+            _0xG.setValues(_0xB)
         end
     end
 end
 
-local _st = { pc = false }
+local _0xSt = { pc = false }
+_0xG.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n✅ License Verified\n📅 Expire: ".._0xT.."\n━━━━━━━━━━━━━━━━━━━━", "START")
 
-gg.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n✅ License Verified\n📅 Expire: ".._server_date.."\n━━━━━━━━━━━━━━━━━━━━", "START")
-
-function _menu()
-    local _txt = _st.pc and "🔛 PC Logo [ ON ]" or "📴 PC Logo [ OFF ]"
-    local _sel = gg.choice({_txt, "❌ Exit"}, nil, "👑 SAJIB TOOLS OFFICIAL\n📅 Expire: ".._server_date)
-
-    if _sel == 1 then
-        if not _st.pc then
-            gg.toast("⏳ Activating...")
-            _patch(68968552, "\48\48\48\48\56\48\53\50\67\48\48\51\53\70\68\54")
-            _patch(68968968, "\48\48\48\48\56\48\53\50\67\48\48\51\53\70\68\54")
-            _st.pc = true
-            gg.toast("✅ Activated")
+function _0xMenu()
+    local _0xTxt = _0xSt.pc and "🔛 PC Logo [ ON ]" or "📴 PC Logo [ OFF ]"
+    local _0xCh = _0xG.choice({_0xTxt, "❌ CLOSE"}, nil, "👑 SAJIB TOOLS")
+    if _0xCh == 1 then
+        if not _0xSt.pc then
+            _0xG.toast("⏳ Activating...")
+            _0xP(68968552, _0xO[4])
+            _0xP(68968968, _0xO[4])
+            _0xSt.pc = true
+            _0xG.toast("✅ Applied")
         else
-            gg.toast("⏳ Deactivating...")
-            _patch(68968552, "\49\70\50\48\48\51\68\53")
-            _patch(68968968, "\49\70\50\48\48\51\68\53")
-            _st.pc = false
-            gg.toast("❌ Deactivated")
+            _0xG.toast("⏳ Restoring...")
+            _0xP(68968552, _0xO[5])
+            _0xP(68968968, _0xO[5])
+            _0xSt.pc = false
+            _0xG.toast("❌ Restored")
         end
-    elseif _sel == 2 then os.exit() end
+    elseif _0xCh == 2 then os.exit() end
 end
 
 while true do
-    if gg.isVisible() then
-        gg.setVisible(false)
-        _menu()
+    if _0xG.isVisible() then
+        _0xG.setVisible(false)
+        _0xMenu()
     end
 end
