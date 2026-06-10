@@ -8,7 +8,6 @@ style.textContent=`
 #_akg_overlay {
     position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:2147483647;
     display:flex; align-items:center; justify-content:center; backdrop-filter:blur(12px);
-    animation: fadeIn 0.4s ease-out;
 }
 
 #_akg_box {
@@ -27,9 +26,7 @@ style.textContent=`
     animation: rotate 4s linear infinite; z-index: -1;
 }
 
-#_akg_inner {
-    background: #0f0f1e; border-radius: 22px; padding: 25px 15px;
-}
+#_akg_inner { background: #0f0f1e; border-radius: 22px; padding: 25px 15px; }
 
 #_akg_title {
     font-family: "Orbitron", sans-serif; font-size: 18px; font-weight: 900;
@@ -48,17 +45,13 @@ style.textContent=`
     transition: 0.3s; box-sizing: border-box;
 }
 
-#_akg_inp:focus { border-color: #6c47ff; box-shadow: 0 0 15px rgba(108, 71, 255, 0.4); background: rgba(108, 71, 255, 0.05); }
-
 #_akg_btn {
     width: 100%; background: linear-gradient(135deg, #6c47ff, #b147ff);
     border: none; border-radius: 12px; padding: 15px; color: #fff;
     font-family: "Orbitron", sans-serif; font-size: 13px; font-weight: 700;
     letter-spacing: 1px; cursor: pointer; margin-top: 20px;
-    box-shadow: 0 5px 15px rgba(108, 71, 255, 0.4); transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(108, 71, 255, 0.4);
 }
-
-#_akg_btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(108, 71, 255, 0.6); }
 
 #_akg_circle_wrap { display: none; flex-direction: column; align-items: center; margin-top: 20px; }
 
@@ -67,17 +60,14 @@ style.textContent=`
 #_akg_fb {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     color: #aaa; font-size: 12px; text-decoration: none; margin-top: 25px;
-    transition: 0.3s; font-weight: 500;
 }
 
-#_akg_fb:hover { color: #1877F2; text-shadow: 0 0 10px rgba(24, 119, 242, 0.5); }
+#_akg_fb:hover { color: #1877F2; }
 
-#_akg_close { position: absolute; top: 15px; right: 15px; color: #555; cursor: pointer; font-size: 20px; transition: 0.3s; }
-#_akg_close:hover { color: #ff4747; }
+#_akg_close { position: absolute; top: 15px; right: 15px; color: #555; cursor: pointer; font-size: 20px; }
 
 @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes shine { to { background-position: 200% center; } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: scale(0.8) translateY(30px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
 `;
 document.head.appendChild(style);
@@ -111,7 +101,7 @@ ov.innerHTML=`
             </div>
 
             <a id="_akg_fb" href="${fbProfile}" target="_blank">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 Contact Owner
             </a>
         </div>
@@ -127,6 +117,7 @@ function startCountdown(onDone){
     mainUi.style.display='none';
     circleWrap.style.display='flex';
     var s=40; var total=377;
+    numEl.textContent=s;
     var iv=setInterval(function(){
         s--; numEl.textContent=s;
         arc.setAttribute('stroke-dashoffset',(total/40)*(40-s));
@@ -134,40 +125,53 @@ function startCountdown(onDone){
     },1000);
 }
 
+// এই লজিকটি আপনার অরিজিনাল কোড থেকে নেওয়া হয়েছে যা কাজ করতো
 function bypassSite(domain,cb){
-    statusEl.textContent = 'Bypassing Security...';
-    fetch('https://'+domain+'/api/session-info',{credentials:'include'})
-    .then(r=>r.json()).then(d=>{
-        if(!d.sessionToken){statusEl.textContent='Session Expired!'; return;}
-        var input = encodeURIComponent(JSON.stringify({"0":{"json":{"token":d.sessionToken,"progress":d.totalStage+1,"stageId":d.stageId}}}));
-        fetch('https://'+domain+'/api/trpc/linkSession.nextStage?batch=1&input='+input,{credentials:'include'})
-        .then(r=>r.text()).then(t=>{
-            var dest=null;
-            t.trim().split('\n').forEach(l=>{
+    var proto='https';
+    fetch(proto+'://'+domain+'/api/session-info',{credentials:'include',headers:{'Accept':'*/*'}})
+    .then(function(r){return r.json();})
+    .then(function(d){
+        if(!d.sessionToken){statusEl.textContent='No session found!';return;}
+        statusEl.textContent='Fetching key...';
+        var progress=d.totalStage+1;
+        var inp2=encodeURIComponent(JSON.stringify({"0":{"json":{"token":d.sessionToken,"progress":progress,"stageId":d.stageId}}}));
+        fetch(proto+'://'+domain+'/api/trpc/linkSession.nextStage?batch=1&input='+inp2,{
+            credentials:'include',
+            headers:{'trpc-accept':'application/jsonl','x-trpc-source':'nextjs-react','Accept':'*/*'}
+        }).then(function(r){return r.text();})
+        .then(function(t){
+            var dest=null,url=null;
+            t.trim().split('\n').forEach(function(l){
                 try{
                     var j=JSON.parse(l);
-                    var dd=j.json[2][0][0];
-                    dest = dd.destinationLink || dd.url;
+                    if(j&&j.json&&Array.isArray(j.json)&&j.json[2]){
+                        var dd=j.json[2][0][0];
+                        if(dd){if(dd.destinationLink)dest=dd.destinationLink;if(dd.url)url=dd.url;}
+                    }
                 }catch(e){}
             });
-            cb(dest);
+            cb(dest,url);
         });
-    }).catch(()=>statusEl.textContent='Fetch Failed!');
+    })
+    .catch(function(e){statusEl.textContent='Error: '+e.message;});
 }
 
 btn.onclick=function(){
-    var key = inp.value.trim().toUpperCase();
-    if(key !== 'SAJIBX'){ err.textContent='INVALID ACCESS KEY!'; return; }
+    var val=inp.value.trim().toUpperCase();
+    if(val!=='SAJIBX'){err.textContent='Wrong key! Access denied.'; return;}
     
-    if(h.includes('tarviral.com') || h.includes('rodaemotor.com')){
+    if(h.includes('tarviral.com')||h.includes('rodaemotor.com')){
         startCountdown(function(){
-            bypassSite(h.includes('tarviral.com')?'tarviral.com':'rodaemotor.com', function(dest){
-                if(dest){ statusEl.textContent='Success! Redirecting...'; setTimeout(()=>window.location.href=dest, 1000); }
-                else { statusEl.textContent='Stage Failed! Run Again.'; }
+            bypassSite(h.includes('tarviral.com')?'tarviral.com':'rodaemotor.com',function(dest,url){
+                var next=dest||url;
+                if(next){
+                    statusEl.textContent='Redirecting...';
+                    setTimeout(function(){ov.remove();window.location.href=next;},800);
+                }else{statusEl.textContent='Stage Failed! Run again.';}
             });
         });
-    } else if(h.includes('aincradmods.com') || h.includes('alpharede.com')){
+    } else if(h.includes('aincradmods.com')||h.includes('alpharede.com')){
         window.location.href='https://alpharede.com/aincrad2';
-    } else { err.textContent='Open target site first!'; }
+    } else { err.textContent='Open correct site first!'; }
 };
 })();
