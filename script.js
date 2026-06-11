@@ -1,8 +1,9 @@
+//SAJIB
 (function(){
 if(document.getElementById('_akg_overlay'))return;
 var h=location.host;
 
-// আপনার দেওয়া ফটোর লিঙ্ক
+
 var profilePhoto = "https://raw.githubusercontent.com/Norisk-Bro/Song-edit/refs/heads/main/FB_IMG_1779525249205.jpg";
 
 var style=document.createElement('style');
@@ -104,6 +105,13 @@ style.textContent=`
 ._akg_timer_img {
     object-fit: cover;
     filter: brightness(0.4) contrast(1.1);
+}
+
+/* Time Count hidden professionally */
+#_akg_num { 
+    display: none;
+    text-shadow: 0 0 20px rgba(255,255,255,0.4); 
+    animation: akg-text-pulse 1s infinite alternate ease-in-out; 
 }
 `;
 document.head.appendChild(style);
