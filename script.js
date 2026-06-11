@@ -80,6 +80,26 @@ style.textContent=`
 
 #_akg_btn:active { transform: translateY(0); }
 
+/* Premium Circle Timer Styles */
+#_akg_arc {
+    filter: drop-shadow(0 0 12px #00d2ff);
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+#_akg_num {
+    text-shadow: 0 0 20px rgba(255,255,255,0.4);
+    animation: akg-text-pulse 1s infinite alternate ease-in-out;
+}
+
+@keyframes akg-text-pulse {
+    from { opacity: 0.7; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1.02); }
+}
+
+#_akg_status {
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
 #_akg_tg {
     display: flex; align-items: center; justify-content: center; gap: 10px;
     color: #888; font-size: 11px; text-decoration: none; letter-spacing: 1px;
@@ -103,7 +123,7 @@ ov.id='_akg_overlay';
 
 var fbProfile = "https://www.facebook.com/shuvo8949";
 
-ov.innerHTML='<div id="_akg_box" style="position:relative;"><span id="_akg_close">\u2715<\/span><div id="_akg_title">\u2694 DEVELOPER SAJIB \u2694 <\/div><div id="_akg_sub"> AINCRAD KEY GENERATOR<\/div><div id="_akg_inp_wrap"><input id="_akg_inp" type="password" placeholder="PASSWORD" maxlength="20"\/><\/div><div id="_akg_err" style="color:#ff3e3e; font-size:11px; margin-bottom:14px; min-height:16px; font-weight:700; font-family:Inter, sans-serif;"><\/div><button id="_akg_btn">UNLOCK & GENERATE<\/button><div id="_akg_circle_wrap" style="display:none; flex-direction:column; align-items:center; margin-bottom:16px;"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="transparent" stroke="#111122" stroke-width="6"\/><circle id="_akg_arc" cx="70" cy="70" r="60" fill="none" stroke="#00d2ff" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 70 70)"\/><text id="_akg_num" x="70" y="78" text-anchor="middle" fill="#fff" font-size="42" font-weight="bold" font-family="Oxanium,sans-serif">40<\/text><\/svg><div id="_akg_status" style="font-size:11px; color:#00d2ff; letter-spacing:2px; margin-top:12px; font-weight:bold; font-family:Oxanium,sans-serif; text-transform:uppercase;">\u23f3 Waiting...<\/div><\/div><a id="_akg_tg" href="'+fbProfile+'" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"\/><\/svg> Contact on Facebook<\/a><\/div>';
+ov.innerHTML='<div id="_akg_box" style="position:relative;"><span id="_akg_close">\u2715<\/span><div id="_akg_title">\u2694 DEVELOPER SAJIB \u2694 <\/div><div id="_akg_sub"> AINCRAD KEY GENERATOR<\/div><div id="_akg_inp_wrap"><input id="_akg_inp" type="password" placeholder="PASSWORD" maxlength="20"\/><\/div><div id="_akg_err" style="color:#ff3e3e; font-size:11px; margin-bottom:14px; min-height:16px; font-weight:700; font-family:Inter, sans-serif;"><\/div><button id="_akg_btn">UNLOCK & GENERATE<\/button><div id="_akg_circle_wrap" style="display:none; flex-direction:column; align-items:center; margin-bottom:16px;"><svg width="150" height="150" viewBox="0 0 150 150"><circle cx="75" cy="75" r="65" fill="transparent" stroke="rgba(255,255,255,0.05)" stroke-width="6"\/><circle id="_akg_arc" cx="75" cy="75" r="65" fill="none" stroke="#00d2ff" stroke-width="8" stroke-dasharray="408" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 75 75)"\/><text id="_akg_num" x="75" y="85" text-anchor="middle" fill="#fff" font-size="46" font-weight="900" font-family="Oxanium,sans-serif">40<\/text><\/svg><div id="_akg_status" style="font-size:11px; color:#00d2ff; letter-spacing:2px; margin-top:12px; font-weight:bold; font-family:Oxanium,sans-serif; text-transform:uppercase;">\u23f3 Waiting...<\/div><\/div><a id="_akg_tg" href="'+fbProfile+'" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"\/><\/svg> Contact on Facebook<\/a><\/div>';
 document.body.appendChild(ov);
 
 var inp=document.getElementById('_akg_inp'), btn=document.getElementById('_akg_btn'), err=document.getElementById('_akg_err'), circleWrap=document.getElementById('_akg_circle_wrap'), arc=document.getElementById('_akg_arc'), numEl=document.getElementById('_akg_num'), statusEl=document.getElementById('_akg_status');
@@ -117,7 +137,7 @@ function showCircle(status){
 
 function startCountdown(onDone){
   showCircle('\u23f3 Please wait...');
-  var s=40; var total=377;
+  var s=40; var total=408;
   numEl.textContent=s;
   var iv=setInterval(function(){
     s--; numEl.textContent=s;
