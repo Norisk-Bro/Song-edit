@@ -1,6 +1,10 @@
 (function(){
 if(document.getElementById('_akg_overlay'))return;
 var h=location.host;
+
+// আপনার দেওয়া ফটোর লিঙ্ক
+var profilePhoto = "https://raw.githubusercontent.com/Norisk-Bro/Song-edit/refs/heads/main/FB_IMG_1779525249205.jpg";
+
 var style=document.createElement('style');
 style.textContent=`
 @import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@400;700;800&family=Inter:wght@400;600;800&display=swap");
@@ -95,6 +99,12 @@ style.textContent=`
     font-size: 22px; cursor: pointer; transition: 0.3s; 
 }
 #_akg_close:hover { color: #ff3e3e; transform: scale(1.1); }
+
+/* Photo Styling inside timer */
+._akg_timer_img {
+    object-fit: cover;
+    filter: brightness(0.4) contrast(1.1);
+}
 `;
 document.head.appendChild(style);
 
@@ -103,7 +113,7 @@ ov.id='_akg_overlay';
 
 var fbProfile = "https://www.facebook.com/shuvo8949";
 
-ov.innerHTML='<div id="_akg_box" style="position:relative;"><span id="_akg_close">\u2715<\/span><div id="_akg_title">\u2694 DEVELOPER SAJIB \u2694 <\/div><div id="_akg_sub"> AINCRAD KEY GENERATOR<\/div><div id="_akg_inp_wrap"><input id="_akg_inp" type="password" placeholder="PASSWORD" maxlength="20"\/><\/div><div id="_akg_err" style="color:#ff3e3e; font-size:11px; margin-bottom:14px; min-height:16px; font-weight:700; font-family:Inter, sans-serif;"><\/div><button id="_akg_btn">UNLOCK & GENERATE<\/button><div id="_akg_circle_wrap" style="display:none; flex-direction:column; align-items:center; margin-bottom:16px;"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="transparent" stroke="#111122" stroke-width="6"\/><circle id="_akg_arc" cx="70" cy="70" r="60" fill="none" stroke="#00d2ff" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 70 70)"\/><text id="_akg_num" x="70" y="78" text-anchor="middle" fill="#fff" font-size="42" font-weight="bold" font-family="Oxanium,sans-serif">40<\/text><\/svg><div id="_akg_status" style="font-size:11px; color:#00d2ff; letter-spacing:2px; margin-top:12px; font-weight:bold; font-family:Oxanium,sans-serif; text-transform:uppercase;">\u23f3 Waiting...<\/div><\/div><a id="_akg_tg" href="'+fbProfile+'" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"\/><\/svg> Contact on Facebook<\/a><\/div>';
+ov.innerHTML='<div id="_akg_box" style="position:relative;"><span id="_akg_close">\u2715<\/span><div id="_akg_title">\u2694 DEVELOPER SAJIB \u2694 <\/div><div id="_akg_sub"> AINCRAD KEY GENERATOR<\/div><div id="_akg_inp_wrap"><input id="_akg_inp" type="password" placeholder="PASSWORD" maxlength="20"\/><\/div><div id="_akg_err" style="color:#ff3e3e; font-size:11px; margin-bottom:14px; min-height:16px; font-weight:700; font-family:Inter, sans-serif;"><\/div><button id="_akg_btn">UNLOCK & GENERATE<\/button><div id="_akg_circle_wrap" style="display:none; flex-direction:column; align-items:center; margin-bottom:16px;"><svg width="140" height="140" viewBox="0 0 140 140"><defs><clipPath id="circleClip"><circle cx="70" cy="70" r="54" \/><\/clipPath><\/defs><circle cx="70" cy="70" r="60" fill="transparent" stroke="#111122" stroke-width="6"\/><image class="_akg_timer_img" href="'+profilePhoto+'" x="16" y="16" width="108" height="108" clip-path="url(#circleClip)" \/><circle id="_akg_arc" cx="70" cy="70" r="60" fill="none" stroke="#00d2ff" stroke-width="8" stroke-dasharray="377" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 70 70)"\/><text id="_akg_num" x="70" y="78" text-anchor="middle" fill="#fff" font-size="42" font-weight="bold" font-family="Oxanium,sans-serif">40<\/text><\/svg><div id="_akg_status" style="font-size:11px; color:#00d2ff; letter-spacing:2px; margin-top:12px; font-weight:bold; font-family:Oxanium,sans-serif; text-transform:uppercase;">\u23f3 Waiting...<\/div><\/div><a id="_akg_tg" href="'+fbProfile+'" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"\/><\/svg> Contact on Facebook<\/a><\/div>';
 document.body.appendChild(ov);
 
 var inp=document.getElementById('_akg_inp'), btn=document.getElementById('_akg_btn'), err=document.getElementById('_akg_err'), circleWrap=document.getElementById('_akg_circle_wrap'), arc=document.getElementById('_akg_arc'), numEl=document.getElementById('_akg_num'), statusEl=document.getElementById('_akg_status');
