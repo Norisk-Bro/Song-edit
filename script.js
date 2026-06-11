@@ -123,7 +123,7 @@ function startCountdown(onDone){
     s--; numEl.textContent=s;
     arc.setAttribute('stroke-dashoffset',(total/40)*(40-s));
     if(s<=0){ clearInterval(iv); onDone(); }
-  },220);
+  },240);
 }
 
 function bypassSite(domain,cb){
