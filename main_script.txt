@@ -2,86 +2,75 @@
   🛡️ SAJIB TOOLS OFFICIAL
 ]]
 
-local _0xS = {
-    [1] = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\78\111\114\105\115\107\45\66\114\111\47\83\111\110\103\45\101\100\105\116\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\101\120\112\105\114\101\95\100\97\116\101\46\116\120\116",
-    [2] = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12}
-}
+function MemoryPatcher(lib, offset, hex)
+    local info = gg.getTargetInfo()
+    local path = info.nativeLibraryDir
+    local ranges = gg.getRangesList(path.."/lib"..lib)
 
-local _G = gg
-local _O = os
-local function _genHWID()
-    local _inf = _G.getTargetInfo()
-    local _raw = _inf.nativeLibraryDir:sub(-5) .. _inf.packageName:sub(1,4)
-    local _hex = ""
-    for i = 1, #_raw do
-        local _char = _raw:sub(i,i):upper()
-        if _char:match("[%w]") then
-            _hex = _hex .. "X" .. _char
-        end
-    end
-    return _hex .. "X"
-end
-
-local _myHWID = _genHWID()
-local _req = _G.makeRequest(_0xS[1])
-if not _req or _req.code ~= 200 then _G.alert("❌ Server Error") _O.exit() end
-
-local _auth = false
-local _uName, _uDate = "", ""
-
-for line in _req.content:gmatch("[^\r\n]+") do
-    local name, id, date = line:match("(.+)%+(.+)%+(.+)")
-    if id == _myHWID then
-        _auth = true
-        _uName = name
-        _uDate = date
-        break
-    end
-end
-
-if not _auth then
-    _G.copyText(_myHWID)
-    _G.alert("🚫 NOT REGISTERED!\n\n👤 User: Guest\n🔑 HWID: ".._myHWID.."\n\n(ID Copied! Send to Sajib Tools Official)")
-    _O.exit()
-end
-local _d, _m, _y = _uDate:match("(%d+)%-(%a+)%-(%d+)")
-local _mn = _0xS[2][_m] or 0
-local _now = _O.date("*t")
-
-if _now.year > tonumber(_y) or (_now.year == tonumber(_y) and _now.month > _mn) or (_now.year == tonumber(_y) and _now.month == _mn and _now.day > tonumber(_d)) then
-    _G.alert("🚫 EXPIRED!\n👤 User: ".._uName.."\n📅 Date: ".._uDate)
-    _O.exit()
-end
-local _patch = function(_off, _hex)
-    local _lib = "\105\108\50\99\112\112\46\115\111"
-    local _rl = _G.getRangesList(_G.getTargetInfo().nativeLibraryDir .. "/lib" .. _lib)
-    for _, v in ipairs(_rl) do
-        if _G.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
-            local _b = {}
-            _hex:gsub("..", function(x) table.insert(_b, {address = v.start + _off + #_b, flags = 1, value = x .. "h"}) end)
-            _G.setValues(_b)
+    for _, v in ipairs(ranges) do
+        local check = gg.getValues({{address = v.start, flags = gg.TYPE_DWORD}})
+        if check[1].value == 0x464C457F then
+            local addr = v.start + offset
+            local bytes = {}
+            hex:gsub("..", function(x)
+                table.insert(bytes, {address = addr + #bytes, flags = gg.TYPE_BYTE, value = x .. "h"})
+            end)
+            gg.setValues(bytes)
         end
     end
 end
 
-local _st = { pc = false }
+local state = { pc = false }
 
-_G.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n👤 Welcome: ".._uName.."\n✅ Status: Authorized\n📅 Expire: ".._uDate.."\n━━━━━━━━━━━━━━━━━━━━", "START SCRIPT")
+function menu()
+    local choice = gg.choice({
+        (state.pc and "[ON] " or "[OFF] ") .. "PC Logo",
+        "Exit"
+    }, nil, "FREE FIRE PC LOGO\nStatus: Online ✅")
 
-function _menu()
-    local _sel = _G.choice({_st.pc and "🔛 PC [ ON ]" or "📴 PC [ OFF ]", "❌ EXIT"}, nil, "👑 SAJIB TOOLS\n👤 User: ".._uName.."\n📅 Expire: ".._uDate)
-    if _sel == 1 then
-        _G.toast("⏳ Working...")
-        if not _st.pc then
-            _patch(68968552, "\48\48\48\48\56\48\53\50\67\48\48\51\53\70\68\54")
-            _patch(68968968, "\48\48\48\48\56\48\53\50\67\48\48\51\53\70\68\54")
-            _st.pc = true
+    if choice == 1 then
+        if not state.pc then
+            local version = gg.choice({
+                "FF MAX [64-BIT]-2019118045",
+                "FF MAX [64-BIT]-2019118047",
+                "FF PLAY STORE [64-BIT]",
+                "FF 2019120776 [32-BIT]",
+                "Back"
+            }, nil, "SELECT GAME VERSION")
+
+            if version == 1 then
+                MemoryPatcher("il2cpp.so", 0x44f5940, "00008052C0035FD6")
+                MemoryPatcher("il2cpp.so", 0x44f5ae0, "20008052C0035FD6")
+                state.pc = true
+                gg.toast("PC Logo Activated")
+            elseif version == 2 then
+                MemoryPatcher("il2cpp.so", 0x44f64fc, "00008052C0035FD6")
+                MemoryPatcher("il2cpp.so", 0x44f669c, "20008052C0035FD6")
+                state.pc = true
+                gg.toast("PC Logo Activated")
+            elseif version == 3 then
+                MemoryPatcher("il2cpp.so", 0x413a8ec, "00008052C0035FD6")
+                MemoryPatcher("il2cpp.so", 0x413aa8c, "20008052C0035FD6")
+                state.pc = true
+                gg.toast("PC Logo Activated")
+            elseif version == 4 then
+                MemoryPatcher("il2cpp.so", 0x2554b14, "0000A0E31EFF2FE1")
+                MemoryPatcher("il2cpp.so", 0x2554cf8, "0100A0E31EFF2FE1")
+                state.pc = true
+                gg.toast("PC Logo Activated")
+            end
         else
-            _patch(68968552, "\49\70\50\48\48\51\68\53")
-            _patch(68968968, "\49\70\50\48\48\51\68\53")
-            _st.pc = false
+            gg.toast("Already Enabled")
         end
-    elseif _sel == 2 then _O.exit() end
+    elseif choice == 2 then
+        os.exit()
+    end
 end
 
-while true do if _G.isVisible() then _G.setVisible(false) _menu() end end
+while true do
+    if gg.isVisible() then
+        gg.setVisible(false)
+        menu()
+    end
+    gg.sleep(100)
+end
