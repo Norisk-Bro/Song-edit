@@ -1,10 +1,18 @@
--- [[ 🛡️ SAJIB TOOLS OFFICIAL ]]
+-- [[ 🛡️ SAJIB TOOLS OFFICIAL - DECODED ]]
 
--- CONFIGURATION (AUTH & EXPIRY)
-local server_url = "https://raw.githubusercontent.com/Norisk-Bro/Song-edit/refs/heads/main/expire_date.txt"
-local months = {["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12}
+local Config = {
+    -- ডিকোড করা লিঙ্ক: https://raw.githubusercontent.com/Norisk-Bro/Song-edit/refs/heads/main/expire_date.txt
+    [1] = "https://raw.githubusercontent.com/Norisk-Bro/Song-edit/refs/heads/main/expire_date.txt",
+    [2] = {
+        ["January"]=1, ["February"]=2, ["March"]=3, ["April"]=4, ["May"]=5, ["June"]=6, 
+        ["July"]=7, ["August"]=8, ["September"]=9, ["October"]=10, ["November"]=11, ["December"]=12
+    }
+}
 
--- HWID GENERATOR
+local gg = gg
+local os = os
+
+-- HWID জেনারেট করার ফাংশন
 local function genHWID()
     local info = gg.getTargetInfo()
     local raw = info.nativeLibraryDir:sub(-5) .. info.packageName:sub(1,4)
@@ -18,10 +26,10 @@ local function genHWID()
     return hex .. "X"
 end
 
--- AUTHENTICATION START
 local myHWID = genHWID()
-local req = gg.makeRequest(server_url)
+local req = gg.makeRequest(Config[1])
 
+-- সার্ভার চেক
 if not req or req.code ~= 200 then 
     gg.alert("❌ Server Error") 
     os.exit() 
@@ -30,6 +38,7 @@ end
 local auth = false
 local uName, uDate = "", ""
 
+-- ইউজার অথেন্টিকেশন চেক
 for line in req.content:gmatch("[^\r\n]+") do
     local name, id, date = line:match("(.+)%+(.+)%+(.+)")
     if id == myHWID then
@@ -40,15 +49,16 @@ for line in req.content:gmatch("[^\r\n]+") do
     end
 end
 
+-- যদি আইডি রেজিস্টার্ড না থাকে
 if not auth then
     gg.copyText(myHWID)
     gg.alert("🚫 NOT REGISTERED!\n\n👤 User: Guest\n🔑 HWID: "..myHWID.."\n\n(ID Copied! Send to Sajib Tools Official)")
     os.exit()
 end
 
--- EXPIRY CHECK
+-- এক্সপায়ারি ডেট চেক
 local d, m, y = uDate:match("(%d+)%-(%a+)%-(%d+)")
-local mn = months[m] or 0
+local mn = Config[2][m] or 0
 local now = os.date("*t")
 
 if now.year > tonumber(y) or (now.year == tonumber(y) and now.month > mn) or (now.year == tonumber(y) and now.month == mn and now.day > tonumber(d)) then
@@ -56,24 +66,16 @@ if now.year > tonumber(y) or (now.year == tonumber(y) and now.month > mn) or (no
     os.exit()
 end
 
--- SUCCESS MESSAGE
-gg.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n👤 Welcome: "..uName.."\n✅ Status: Authorized\n📅 Expire: "..uDate.."\n━━━━━━━━━━━━━━━━━━━━", "START SCRIPT")
-
-
--- [[ YOUR ORIGINAL CODE STARTS HERE ]]
-
-function MemoryPatcher(lib, offset, hex)
-    local info = gg.getTargetInfo()
-    local path = info.nativeLibraryDir
-    local ranges = gg.getRangesList(path.."/lib"..lib)
-
+-- মেমোরি প্যাচ ফাংশন (il2cpp.so লাইব্রেরি প্যাচ করার জন্য)
+local patch_function = function(offset, hex_values)
+    local lib_name = "il2cpp.so" -- ডিকোড করা লাইব্রেরি নাম
+    local ranges = gg.getRangesList(gg.getTargetInfo().nativeLibraryDir .. "/lib" .. lib_name)
     for _, v in ipairs(ranges) do
-        local check = gg.getValues({{address = v.start, flags = gg.TYPE_DWORD}})
-        if check[1].value == 0x464C457F then
-            local addr = v.start + offset
+        -- ELF Header চেক (0x464C457F)
+        if gg.getValues({{address = v.start, flags = 4}})[1].value == 1179403647 then
             local bytes = {}
-            hex:gsub("..", function(x)
-                table.insert(bytes, {address = addr + #bytes, flags = gg.TYPE_BYTE, value = x .. "h"})
+            hex_values:gsub("..", function(x) 
+                table.insert(bytes, {address = v.start + offset + #bytes, flags = 1, value = x .. "h"}) 
             end)
             gg.setValues(bytes)
         end
@@ -82,55 +84,34 @@ end
 
 local state = { pc = false }
 
-function menu()
-    local choice = gg.choice({
-        (state.pc and "[ON] " or "[OFF] ") .. "PC Logo",
-        "Exit"
-    }, nil, "FREE FIRE PC LOGO\n👤 User: "..uName.."\n📅 Expire: "..uDate)
+gg.alert("━━━━━━━━━━━━━━━━━━━━\n👑 SAJIB TOOLS OFFICIAL\n━━━━━━━━━━━━━━━━━━━━\n👤 Welcome: "..uName.."\n✅ Status: Authorized\n📅 Expire: "..uDate.."\n━━━━━━━━━━━━━━━━━━━━", "START SCRIPT")
 
-    if choice == 1 then
+-- মেনু ফাংশন
+function _menu()
+    local sel = gg.choice({state.pc and "🔛 PC [ ON ]" or "📴 PC [ OFF ]", "❌ EXIT"}, nil, "👑 SAJIB TOOLS\n👤 User: "..uName.."\n📅 Expire: "..uDate)
+    
+    if sel == 1 then
+        gg.toast("⏳ Working...")
         if not state.pc then
-            local version = gg.choice({
-                "FF MAX [64-BIT]-2019118045",
-                "FF MAX [64-BIT]-2019118047",
-                "FF PLAY STORE [64-BIT]",
-                "FF 2019120776 [32-BIT]",
-                "Back"
-            }, nil, "SELECT GAME VERSION")
-
-            if version == 1 then
-                MemoryPatcher("il2cpp.so", 0x44f5940, "00008052C0035FD6")
-                MemoryPatcher("il2cpp.so", 0x44f5ae0, "20008052C0035FD6")
-                state.pc = true
-                gg.toast("PC Logo Activated")
-            elseif version == 2 then
-                MemoryPatcher("il2cpp.so", 0x44f64fc, "00008052C0035FD6")
-                MemoryPatcher("il2cpp.so", 0x44f669c, "20008052C0035FD6")
-                state.pc = true
-                gg.toast("PC Logo Activated")
-            elseif version == 3 then
-                MemoryPatcher("il2cpp.so", 0x413a8ec, "00008052C0035FD6")
-                MemoryPatcher("il2cpp.so", 0x413aa8c, "20008052C0035FD6")
-                state.pc = true
-                gg.toast("PC Logo Activated")
-            elseif version == 4 then
-                MemoryPatcher("il2cpp.so", 0x2554b14, "0000A0E31EFF2FE1")
-                MemoryPatcher("il2cpp.so", 0x2554cf8, "0100A0E31EFF2FE1")
-                state.pc = true
-                gg.toast("PC Logo Activated")
-            end
+            -- PC ON করার জন্য প্যাচ (Hex: 00008052C0035FD6)
+            patch_function(2019118045, "00008052C0035FD6")
+            patch_function(2019118047, "00008052C0035FD6")
+            state.pc = true
         else
-            gg.toast("Already Enabled")
+            -- PC OFF করার জন্য প্যাচ (Hex: 1F2003D5)
+            patch_function(68968552, "1F2003D5")
+            patch_function(68968968, "1F2003D5")
+            state.pc = false
         end
-    elseif choice == 2 then
-        os.exit()
+    elseif sel == 2 then 
+        os.exit() 
     end
 end
 
-while true do
-    if gg.isVisible() then
-        gg.setVisible(false)
-        menu()
-    end
-    gg.sleep(100)
+-- মেইন লুপ
+while true do 
+    if gg.isVisible() then 
+        gg.setVisible(false) 
+        _menu() 
+    end 
 end
