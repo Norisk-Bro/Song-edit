@@ -4,7 +4,15 @@
 (function(){
 if(document.getElementById('_akg_overlay'))return;
 var h=location.host;
-
+var songURL = "https://raw.githubusercontent.com/Norisk-Bro/Song-edit/main/Jitni%20Dafa%20-%20Lyrical%20%EF%BD%9C%20PARMANU%20%EF%BD%9C%20John%20Abraham%20%2C%20Diana%20%EF%BD%9C%20Jeet%20Gannguli%20%EF%BD%9C%20RashmiVirag.mp3";
+var audio = new Audio(songURL);
+audio.loop = true;
+function playMusic() {
+  audio.play().catch(function() {
+    document.addEventListener('click', function() { audio.play(); }, { once: true });
+  });
+}
+playMusic();
 
 var profilePhoto = "https://raw.githubusercontent.com/Norisk-Bro/Song-edit/refs/heads/main/FB_IMG_1779525249205.jpg";
 
@@ -129,7 +137,7 @@ document.body.appendChild(ov);
 
 var inp=document.getElementById('_akg_inp'), btn=document.getElementById('_akg_btn'), err=document.getElementById('_akg_err'), circleWrap=document.getElementById('_akg_circle_wrap'), arc=document.getElementById('_akg_arc'), numEl=document.getElementById('_akg_num'), statusEl=document.getElementById('_akg_status');
 
-document.getElementById('_akg_close').onclick=function(){ov.remove();};
+document.getElementById('_akg_close').onclick=function(){ov.remove(); audio.pause();};
 
 function showCircle(status){
   circleWrap.style.display='flex'; btn.style.display='none'; inp.style.display='none'; document.getElementById('_akg_inp_wrap').style.display='none'; err.style.display='none';
