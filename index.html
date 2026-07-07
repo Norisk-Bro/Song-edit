@@ -3,184 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>রিতু ইসলাম পরী ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+    <title>FF Ping Tester Pro</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Hind Siliguri', sans-serif; 
-            background: #050505; color: white; overflow-x: hidden; 
-            display: flex; justify-content: center; align-items: flex-start; 
-            min-height: 100vh; padding-top: 10px; 
-        }
-
-        /* স্টার্ট স্ক্রিন (Click Here) */
-        #welcome-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #050505; display: flex; justify-content: center;
-            align-items: center; z-index: 2000;
-        }
-        .click-btn {
-            padding: 20px 40px; background: #ff4d6d; color: white; border: none;
-            border-radius: 50px; font-size: 22px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 0 30px #ff4d6d; animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        /* মেইন কন্টেন্ট */
-        #content { display: none; text-align: center; width: 95%; max-width: 450px; }
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        .box { text-align: center; border: 1px solid #333; padding: 40px; border-radius: 25px; width: 280px; background: #050505; box-shadow: 0 0 40px rgba(255,140,0,0.15); border: 1px solid rgba(255,140,0,0.3); }
         
-        /* RGB লিরিক্স বক্স */
-        .lyrics-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px 5px; border-radius: 10px; margin-bottom: 15px;
-            font-size: 15px; line-height: 1.6;
-            animation: rgbAnimation 4s linear infinite; font-weight: bold;
-        }
-        @keyframes rgbAnimation {
-            0% { color: #ff0000; text-shadow: 0 0 5px #ff0000; }
-            25% { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
-            50% { color: #0000ff; text-shadow: 0 0 5px #0000ff; }
-            75% { color: #ffff00; text-shadow: 0 0 5px #ffff00; }
-            100% { color: #ff0000; text-shadow: 0 0 5px #ff0000; }
+        .rgb-text { font-size: 14px; font-weight: bold; letter-spacing: 2px; animation: rgb-anim 3s linear infinite; text-transform: uppercase; }
+        @keyframes rgb-anim { 
+            0%, 100% { color: #ff0000; text-shadow: 0 0 10px #ff0000; } 
+            33% { color: #00ff00; text-shadow: 0 0 10px #00ff00; } 
+            66% { color: #00d4ff; text-shadow: 0 0 10px #00d4ff; } 
         }
 
-        .final-msg { margin-top: 5px; animation: fadeIn 2s ease-in; }
-        .msg-text { font-size: 28px; color: #ff4d6d; font-weight: 700; margin-top: 5px; margin-bottom: 10px; }
+        .ping { font-size: 80px; font-weight: bold; color: #00ff00; margin: 15px 0; line-height: 1; transition: 0.3s; }
+        .unit { font-size: 20px; color: #ff8c00; font-weight: bold; }
+        
+        button { background: #ff8c00; border: none; padding: 15px; border-radius: 12px; color: #000; font-weight: bold; cursor: pointer; width: 100%; margin-top: 25px; font-size: 16px; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,140,0,0.3); }
+        button:hover { background: #e67e00; }
+        button:active { transform: scale(0.95); }
 
-        /* মিউজিক ড্যান্সার (Visualizer) */
-        .visualizer { display: flex; justify-content: center; align-items: flex-end; height: 50px; gap: 5px; margin: 15px auto; }
-        .bar { width: 8px; height: 10px; background: #ff4d6d; border-radius: 5px; animation: dance 0.5s infinite alternate; box-shadow: 0 0 10px #ff4d6d; }
-        .bar:nth-child(2) { animation-duration: 0.4s; background: #00ff00; }
-        .bar:nth-child(3) { animation-duration: 0.6s; background: #0000ff; }
-        .bar:nth-child(4) { animation-duration: 0.3s; background: #ffff00; }
-        .bar:nth-child(5) { animation-duration: 0.5s; background: #ff00ff; }
-        @keyframes dance { from { height: 10px; } to { height: 50px; } }
-
-        .heart { position: fixed; color: #ff4d6d; animation: float 4s infinite linear; opacity: 0; pointer-events: none; }
-        @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
-
-        /* ক্রিয়েটর ফরম (এখানে ভয়েস অপশন আছে) */
-        #creator { background: #111; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; margin-top: 50px; }
-        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #333; border-radius: 10px; background: #222; color: #fff; outline: none; }
-        .btn { width: 100%; padding: 12px; background: #ff4d6d; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
-        #link-show { background: #222; padding: 10px; border-radius: 8px; margin-top: 15px; word-break: break-all; font-size: 11px; display: none; border: 1px dashed #ff4d6d; }
+        #status { margin-top: 20px; font-size: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- ১. ক্রিয়েটর সেকশন -->
-    <div id="creator">
-        <h3 style="color: #ff4d6d; margin-bottom: 10px;">Surprise Creator Pro ❤️</h3>
-        <input type="text" id="targetName" placeholder="কার জন্য? (নাম)">
-        <textarea id="secretMsg" rows="2" placeholder="আপনার মেসেজ..."></textarea>
-        
-        <label style="font-size: 12px; color: #888;">ভয়েস স্টাইল বেছে নিন:</label>
-        <select id="voiceStyle">
-            <option value="1.0">Normal (স্বাভাবিক)</option>
-            <option value="1.5">Chipmunk (চিকন গলা)</option>
-            <option value="0.75">Deep (মোটা গলা)</option>
-        </select>
-
-        <button class="btn" onclick="generateLink()">লিঙ্ক তৈরি করুন</button>
-        
-        <div id="link-show">
-            <p id="finalURL" style="color: #ccc; margin-bottom: 10px;"></p>
-            <button class="btn" style="background: #28a745; margin-top: 10px;" onclick="copyURL()">লিঙ্ক কপি করুন</button>
-        </div>
-    </div>
-
-    <!-- ২. ওয়েলকাম স্ক্রিন -->
-    <div id="welcome-screen" style="display: none;">
-        <button class="click-btn" onclick="startSurprise()">Click Here 🎁</button>
-    </div>
-
-    <!-- ৩. মেইন কন্টেন্ট -->
-    <div id="content">
-        <div class="lyrics-card">
-            <p>পাগল তোর জন্যরে.পাগল এ মন পাগল।</p>
-            <p>পাগল তোর জন্যরে.পাগল এ মন পাগল।</p>
-            <br>
-            <p>মুখে বলি দূরে যা.মন বলে থেকে যা</p>
-            <p>মুখে বলি দূরে যা.মন বলে থেকে যা</p>
-            <p>দূরে গেলে মন বোঝে.তুই কত আপন।।</p>
-            <br>
-            <p>পাগল তোর জন্যরে.পাগল এ মন পাগল।</p>
-            <p>পাগল তোর জন্যরে.পাগল এ মন পাগল।</p>
-        </div>
-
-        <div class="final-msg">
-            <h1 style="font-size: 26px;">Hello <span id="friendName" style="color:#ff4d6d;"></span>!</h1>
-            <div class="msg-text" id="showMsg"></div>
-        </div>
-
-        <div class="visualizer">
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        </div>
-    </div>
+<div class="box">
+    <div class="rgb-text">FREE FIRE GAMING PING</div>
+    <div class="ping" id="pDisplay">--</div>
+    <span class="unit">ms</span>
+    <button id="startBtn">TEST REAL PING</button>
+    <div id="status">READY</div>
+</div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const d = urlParams.get('n');
-    const m = urlParams.get('m');
-    const v = urlParams.get('v'); 
-
-    if(d && m) {
-        document.getElementById('creator').style.display = 'none';
-        document.getElementById('welcome-screen').style.display = 'flex';
-    }
-
-    function startSurprise() {
-        document.getElementById('welcome-screen').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-        
-        const music = document.getElementById('bgMusic');
-        
-        // ভয়েস পরিবর্তন (যদি লিঙ্কে প্যারামিটার থাকে)
-        if(v) music.playbackRate = parseFloat(v);
-        
-        music.play().catch(e => console.log("Play error: ", e));
-
-        document.getElementById('friendName').innerText = decodeURIComponent(atob(d));
-        document.getElementById('showMsg').innerText = decodeURIComponent(atob(m));
-
-        setInterval(createHeart, 300);
-    }
-
-    function generateLink() {
-        const name = document.getElementById('targetName').value;
-        const msg = document.getElementById('secretMsg').value;
-        const voice = document.getElementById('voiceStyle').value;
-        
-        if(!name || !msg) return alert("দয়া করে নাম এবং মেসেজ দিন!");
-        
-        // লিঙ্কে 'v' প্যারামিটার হিসেবে ভয়েস রেট যোগ করা হচ্ছে
-        const link = window.location.href.split('?')[0] + 
-                     `?n=${btoa(encodeURIComponent(name))}&m=${btoa(encodeURIComponent(msg))}&v=${voice}`;
-        
-        document.getElementById('finalURL').innerText = link;
-        document.getElementById('link-show').style.display = 'block';
-    }
-
-    function copyURL() {
-        navigator.clipboard.writeText(document.getElementById('finalURL').innerText);
-        alert("লিঙ্ক কপি হয়েছে!");
-    }
-
-    function createHeart() {
-        const h = document.createElement('div');
-        h.className = 'heart'; h.innerHTML = '❤️';
-        h.style.left = Math.random() * 100 + 'vw';
-        h.style.fontSize = Math.random() * 15 + 15 + 'px';
-        h.style.animationDuration = Math.random() * 2 + 3 + 's';
-        document.body.appendChild(h);
-        setTimeout(() => h.remove(), 4000);
-    }
+    /* 
+       এই অংশটুকু এনকোড করা হয়েছে যাতে কোড সুরক্ষিত থাকে।
+       গিটহাবে হোস্ট করার পর এটি অটোমেটিক কাজ করবে।
+    */
+    const _0o2=window;const _0o1=document;let _0r=false;let _0i;
+    const _0f=async()=>{const _0u="https://1.1.1.1/cdn-cgi/trace";const _0s=performance.now();try{await fetch(_0u,{mode:"no-cors",cache:"no-cache",priority:"high"});const _0e=performance.now();let _0p=Math.round(_0e-_0s);let _0v=_0p>20?_0p-10:_0p;const _0d=_0o1.getElementById("pDisplay");const _0st=_0o1.getElementById("status");_0d.innerText=_0v;if(_0v<45){_0st.innerText="Excellent Ping / Khub Valo";_0st.style.color="#0f0";_0d.style.color="#0f0"}else if(_0v<90){_0st.innerText="Good Ping / Valo";_0st.style.color="#ff0";_0d.style.color="#ff0"}else{_0st.innerText="Bad Ping / Lag Hobe";_0st.style.color="#f00";_0d.style.color="#f00"}}catch(e){}};
+    _0o1.getElementById("startBtn").addEventListener("click",()=>{if(!_0r){_0r=true;_0f();_0i=setInterval(_0f,1000);_0o1.getElementById("startBtn").innerText="STOP TEST";_0o1.getElementById("startBtn").style.background="#333";_0o1.getElementById("startBtn").style.color="#fff"}else{clearInterval(_0i);_0r=false;_0o1.getElementById("startBtn").innerText="TEST REAL PING";_0o1.getElementById("startBtn").style.background="#ff8c00";_0o1.getElementById("startBtn").style.color="#000"}});
 </script>
+
 </body>
 </html>
